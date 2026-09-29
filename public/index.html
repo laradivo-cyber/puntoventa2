@@ -1,0 +1,7185 @@
+ <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Punto de Venta</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 10px;
+        }
+
+        input, select, button {
+            padding: 5px 8px;
+            margin: 3px;
+            font-size: 14px;
+        }
+
+        button {
+            cursor: pointer;
+            border-size: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background: #eee;
+        }
+
+        #carrito {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        #ventanaCobro {
+            display: none;
+            border: 1px solid #000;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        #historialVentas {
+            margin-top: 15px;
+        }
+
+        #corteCaja {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid #ccc;
+        }
+        /* ========================= */
+/* DASHBOARD */
+/* ========================= */
+
+#dashboard {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin: 15px 0 25px 0;
+}
+
+#dashboard > div {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    background: #f8f8f8;
+    text-align: center;
+}
+
+#dashboard strong {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+#dashboard span {
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+@media (max-width: 900px) {
+    #dashboard {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+/* ========================================
+   HISTORIAL DE VENTAS
+======================================== */
+
+.historial-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.historial-header h2 {
+    margin: 0;
+}
+
+.historial-header p {
+    margin: 5px 0 0;
+    color: #777;
+}
+
+.historial-filtros {
+    display: grid;
+    grid-template-columns:
+        minmax(220px, 2fr)
+        minmax(150px, 1fr)
+        minmax(150px, 1fr)
+        minmax(170px, 1fr)
+        auto
+        auto;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.historial-filtros input,
+.historial-filtros select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d5d9df;
+    border-radius: 7px;
+    background: #fff;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.historial-resumen {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.historial-card {
+    background: #fff;
+    border: 1px solid #e1e4e8;
+    border-radius: 9px;
+    padding: 15px;
+    min-height: 75px;
+    box-sizing: border-box;
+}
+
+.historial-card span {
+    display: block;
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 8px;
+}
+
+.historial-card strong {
+    display: block;
+    font-size: 21px;
+    color: #111827;
+}
+
+.historial-tabla-contenedor {
+    width: 100%;
+    overflow-x: auto;
+    background: #fff;
+    border: 1px solid #e1e4e8;
+    border-radius: 9px;
+}
+
+.historial-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 850px;
+}
+
+.historial-tabla th {
+    background: #f5f7fa;
+    padding: 12px;
+    text-align: left;
+    font-size: 13px;
+    color: #4b5563;
+    border-bottom: 1px solid #e1e4e8;
+}
+
+.historial-tabla td {
+    padding: 12px;
+    border-bottom: 1px solid #edf0f2;
+    font-size: 14px;
+}
+
+.historial-tabla tbody tr:hover {
+    background: #fafafa;
+}
+
+.historial-estado {
+    padding: 15px;
+    text-align: center;
+    color: #6b7280;
+}
+
+.historial-paginacion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.historial-paginacion button {
+    min-width: 40px;
+}
+
+.historial-analisis {
+    margin-top: 30px;
+}
+
+.historial-analisis h3 {
+    margin-bottom: 15px;
+}
+
+.historial-grafica {
+    background: #fff;
+    border: 1px solid #e1e4e8;
+    border-radius: 9px;
+    padding: 18px;
+    margin-bottom: 20px;
+}
+
+.historial-grafica h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.historial-grafica canvas {
+    width: 100% !important;
+    max-height: 320px;
+}
+
+.historial-productos-top {
+    background: #fff;
+    border: 1px solid #e1e4e8;
+    border-radius: 9px;
+    padding: 18px;
+    margin-bottom: 20px;
+}
+
+.historial-producto-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #edf0f2;
+}
+
+.historial-producto-top:last-child {
+    border-bottom: none;
+}
+
+.historial-producto-info strong {
+    display: block;
+}
+
+.historial-producto-info small {
+    color: #6b7280;
+}
+
+.historial-producto-unidades {
+    font-weight: bold;
+}
+
+.historial-acciones {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-historial {
+    border: none;
+    border-radius: 6px;
+    padding: 7px 10px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.btn-historial-detalle {
+    background: #2563eb;
+    color: white;
+}
+
+.btn-historial-ticket {
+    background: #374151;
+    color: white;
+}
+
+.modal-historial {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.modal-historial.activo {
+    display: flex;
+}
+
+.modal-historial-contenido {
+    position: relative;
+    background: #fff;
+    width: min(900px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 10px;
+    padding: 25px;
+    box-sizing: border-box;
+}
+
+.modal-historial-cerrar {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    cursor: pointer;
+    color: #555;
+}
+
+.detalle-venta-header {
+    margin-bottom: 20px;
+    padding-right: 35px;
+}
+
+.detalle-venta-header h2 {
+    margin: 0 0 8px;
+}
+
+.detalle-venta-datos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.detalle-venta-dato {
+    background: #f5f7fa;
+    padding: 12px;
+    border-radius: 7px;
+}
+
+.detalle-venta-dato span {
+    display: block;
+    color: #6b7280;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.detalle-venta-tabla {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.detalle-venta-tabla th,
+.detalle-venta-tabla td {
+    padding: 10px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+.detalle-venta-total {
+    margin-top: 20px;
+    text-align: right;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 1100px) {
+
+    .historial-filtros {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .historial-resumen {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .detalle-venta-datos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+
+    .historial-filtros {
+        grid-template-columns: 1fr;
+    }
+
+    .historial-resumen {
+        grid-template-columns: 1fr;
+    }
+
+    .detalle-venta-datos {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-historial {
+        padding: 10px;
+    }
+
+    .modal-historial-contenido {
+        padding: 18px;
+    }
+}
+    
+/* Ajustes finales del Historial */
+.historial-grafica canvas { display:block; width:100%; min-height:300px; }
+.historial-estado:empty { display:none; }
+.historial-tabla td, .historial-tabla th { white-space:nowrap; }
+.historial-acciones { flex-wrap:wrap; }
+</style>
+</head>
+ <body>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6f8;
+    color: #1f2937;
+}
+
+/* =========================
+   APP
+========================= */
+
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+    width: 230px;
+    background: #111827;
+    color: white;
+    padding: 20px 14px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.logo {
+    font-size: 21px;
+    font-weight: bold;
+    padding: 10px 12px 25px;
+}
+
+.logo small {
+    display: block;
+    font-size: 11px;
+    color: #9ca3af;
+    margin-top: 4px;
+    font-weight: normal;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.menu button {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: #d1d5db;
+    padding: 12px;
+    text-align: left;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.menu button:hover {
+    background: #1f2937;
+    color: white;
+}
+
+.menu button.activo {
+    background: #2563eb;
+    color: white;
+}
+
+.menu-separador {
+    height: 1px;
+    background: #374151;
+    margin: 12px 5px;
+}
+
+.cerrar {
+    margin-top: auto;
+}
+
+/* =========================
+   CONTENIDO
+========================= */
+
+.contenido {
+    flex: 1;
+    min-width: 0;
+    padding: 25px;
+    overflow-x: auto;
+}
+
+.encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+}
+
+.encabezado h1 {
+    margin: 0;
+    font-size: 25px;
+}
+
+.usuario-barra {
+    background: white;
+    border: 1px solid #e5e7eb;
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+/* =========================
+   PANTALLAS
+========================= */
+
+.pantalla {
+    display: none;
+}
+
+.pantalla.activa {
+    display: block;
+}
+
+/* =========================
+   TARJETAS
+========================= */
+
+.tarjetas {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(160px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.tarjeta {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 18px;
+}
+
+.tarjeta-titulo {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 8px;
+}
+
+.tarjeta-valor {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* =========================
+   PANELES
+========================= */
+
+.panel {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 18px;
+}
+
+.panel h2,
+.panel h3 {
+    margin-top: 0;
+}
+
+/* =========================
+   VENTA
+========================= */
+
+.venta-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 20px;
+}
+
+.buscar-venta {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+
+.productos-venta {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.producto-venta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.producto-venta-info strong {
+    display: block;
+}
+
+.producto-venta-info small {
+    color: #6b7280;
+}
+
+.producto-venta-precio {
+    font-weight: bold;
+}
+
+.carrito-panel {
+    position: sticky;
+    top: 20px;
+}
+
+#carrito {
+    max-height: 430px;
+    overflow-y: auto;
+}
+
+#carrito > div {
+    padding: 10px 0;
+}
+
+/* =========================
+   BOTONES
+========================= */
+
+button {
+    cursor: pointer;
+}
+
+.btn {
+    border: 0;
+    border-radius: 6px;
+    padding: 9px 14px;
+    font-size: 13px;
+}
+
+.btn-azul {
+    background: #2563eb;
+    color: white;
+}
+
+.btn-azul:hover {
+    background: #1d4ed8;
+}
+
+.btn-gris {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+.btn-rojo {
+    background: #dc2626;
+    color: white;
+}
+
+.btn-verde {
+    background: #16a34a;
+    color: white;
+}
+
+.btn-grande {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* =========================
+   FORMULARIOS
+========================= */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.form-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-grupo label {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.form-grupo input,
+.form-grupo select {
+    padding: 9px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+}
+
+/* =========================
+   TABLAS
+========================= */
+
+.tabla-contenedor {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th {
+    background: #f3f4f6;
+    text-align: left;
+    font-size: 12px;
+    color: #4b5563;
+}
+
+th,
+td {
+    padding: 11px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+td {
+    font-size: 13px;
+}
+
+/* =========================
+   STOCK
+========================= */
+
+#alertaStockBajo {
+    margin-bottom: 15px;
+}
+
+/* =========================
+   COBRO
+========================= */
+
+#ventanaCobro {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    border: 0 !important;
+    padding: 20px !important;
+    margin: 0 !important;
+}
+
+#ventanaCobro.activa {
+    display: flex !important;
+}
+
+.cobro-modal {
+    width: 420px;
+    max-width: 100%;
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+}
+
+.cobro-modal input,
+.cobro-modal select {
+    width: 100%;
+    padding: 11px;
+    margin-top: 6px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+    .sidebar {
+        width: 190px;
+    }
+
+    .venta-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .carrito-panel {
+        position: static;
+    }
+
+    .tarjetas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 650px) {
+
+    .app {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .menu {
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .menu button {
+        white-space: nowrap;
+    }
+
+    .contenido {
+        padding: 15px;
+    }
+
+    .tarjetas {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+.contenido {
+    position: relative;
+    overflow: hidden;
+} 
+.contenido::before {
+    content: "D I V O";
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 8px;
+    color: #111827;
+    opacity: 0.08;
+
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 0;
+}
+</style>
+
+
+<div class="app">
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            PUNTO DE VENTA
+            <small>Sistema comercial</small>
+        </div>
+
+        <div class="menu">
+
+            <button
+                id="navVentas"
+                class="activo"
+                onclick="mostrarPantalla('ventas', this)"
+            >
+                Ventas
+            </button>
+
+            <button
+                id="navProductos"
+                onclick="mostrarPantalla('productos', this)"
+            >
+                Productos
+            </button>
+
+            <button
+                id="navInventario"
+                onclick="mostrarPantalla('inventario', this)"
+            >
+                Inventario
+            </button>
+
+            <button
+                id="navCaja"
+                onclick="mostrarPantalla('caja', this)"
+            >
+                Caja
+            </button>
+
+            <button
+                id="navHistorial"
+                onclick="mostrarPantalla('historial', this)"
+            >
+                Historial
+            </button>
+<button
+    id="navReportes"
+    onclick="mostrarPantalla('reportes', this)"
+>
+    Reportes
+</button>
+
+<button
+    id="navProveedores"
+    onclick="mostrarPantalla('proveedores', this)"
+>
+    Proveedores
+</button>
+
+<button
+    id="navUsuarios"
+    onclick="mostrarPantalla('usuarios', this)"
+>
+    Usuarios
+</button>
+
+<div class="menu-separador"></div>
+
+<button
+    id="navDashboard"
+    onclick="mostrarPantalla('dashboard', this)"
+>
+    Resumen
+</button>
+
+</div>
+
+        <div class="cerrar">
+
+            <button
+                id="cerrarSesion"
+                class="btn"
+                style="width:100%; background:#7f1d1d; color:white;"
+            >
+                Cerrar sesión
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         CONTENIDO PRINCIPAL
+    ========================= -->
+
+    <main class="contenido">
+
+        <div class="encabezado">
+
+            <h1 id="tituloPantalla">
+                Nueva venta
+            </h1>
+
+            <div class="usuario-barra">
+                Punto de Venta
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             VENTAS
+        ========================= -->
+
+        <section
+            id="pantallaVentas"
+            class="pantalla activa"
+        >
+
+            <div class="venta-layout">
+
+                <!-- PRODUCTOS PARA VENTA -->
+
+                <div class="panel">
+
+                    <h2>
+                        Nueva venta
+                    </h2>
+
+                    <input
+                        type="text"
+                        id="busquedaVenta"
+                        class="buscar-venta"
+                        placeholder="Buscar producto por nombre o código..."
+                    >
+
+                    <input
+                        type="text"
+                        id="codigoEscaner"
+                        class="buscar-venta"
+                        placeholder="Escanea el código de barras"
+                    >
+
+                    <div
+                        id="productosVenta"
+                        class="productos-venta"
+                    >
+
+                        <p>
+                            Selecciona un producto desde Productos.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CARRITO -->
+
+                <div
+                    class="panel carrito-panel"
+                >
+
+                    <h2>
+                        Venta actual
+                    </h2>
+
+                    <div id="carrito">
+                        <p>Carrito vacío</p>
+                    </div>
+
+                    <br>
+
+                    <button
+                        id="nuevaVenta"
+                        class="btn btn-gris"
+                    >
+                        Nueva venta
+                    </button>
+
+                    <button
+                        id="cobrar"
+                        class="btn btn-azul btn-grande"
+                    >
+                        Cobrar
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+        <section
+    id="pantallaProveedores"
+    class="pantalla"
+>
+
+    <div class="panel">
+
+        <h2>
+            Proveedores
+        </h2>
+
+        <button
+            id="nuevoProveedor"
+            class="btn btn-azul"
+        >
+            Nuevo proveedor
+        </button>
+<div
+    id="formularioProveedor"
+    style="display: none;"
+>
+
+    <h3>
+        Nuevo proveedor
+    </h3>
+
+    <input
+        type="text"
+        id="proveedorNombre"
+        placeholder="Nombre del proveedor"
+    >
+
+    <input
+        type="text"
+        id="proveedorEmpresa"
+        placeholder="Empresa"
+    >
+
+    <input
+        type="text"
+        id="proveedorTelefono"
+        placeholder="Teléfono"
+    >
+
+    <input
+        type="email"
+        id="proveedorCorreo"
+        placeholder="Correo"
+    >
+
+    <input
+        type="text"
+        id="proveedorDireccion"
+        placeholder="Dirección"
+    >
+
+    <textarea
+        id="proveedorNotas"
+        placeholder="Notas"
+    ></textarea>
+
+    <br><br>
+
+    <button
+        id="guardarProveedor"
+        class="btn btn-azul"
+    >
+        Guardar proveedor
+    </button>
+
+    <button
+        id="cancelarProveedor"
+        class="btn btn-gris"
+    >
+        Cancelar
+    </button>
+
+</div>
+        <br><br>
+
+        <input
+            type="text"
+            id="buscarProveedor"
+            class="buscar-venta"
+            placeholder="Buscar proveedor..."
+        >
+
+        <div id="listaProveedores">
+
+            <p>
+                No hay proveedores registrados.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+        <!-- =========================
+             DASHBOARD
+        ========================= -->
+
+        <section
+            id="pantallaDashboard"
+            class="pantalla"
+        >
+
+            <div class="tarjetas">
+
+                <div class="tarjeta">
+
+                    <div class="tarjeta-titulo">
+                        Productos
+                    </div>
+
+                    <div
+                        class="tarjeta-valor"
+                        id="totalProductos"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="tarjeta">
+
+                    <div class="tarjeta-titulo">
+                        Stock bajo
+                    </div>
+
+                    <div
+                        class="tarjeta-valor"
+                        id="productosStockBajo"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="tarjeta"
+                    id="ventasHoyCaja"
+                >
+
+                    <div class="tarjeta-titulo">
+                        Ventas de hoy
+                    </div>
+
+                    <div
+                        class="tarjeta-valor"
+                        id="ventasHoy"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="tarjeta"
+                    id="vendidoHoyCaja"
+                >
+
+                    <div class="tarjeta-titulo">
+                        Vendido hoy
+                    </div>
+
+                    <div
+                        class="tarjeta-valor"
+                        id="vendidoHoy"
+                    >
+                        $0.00
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="panel"
+                id="utilidadHoyCaja"
+            >
+
+                <h3>
+                    Utilidad de hoy
+                </h3>
+
+                <div
+                    id="utilidadHoy"
+                    style="font-size:24px;font-weight:bold;"
+                >
+                    $0.00
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <button
+                    id="verInventario"
+                    class="btn btn-azul"
+                >
+                    Ver valor del inventario
+                </button>
+
+                <div
+                    id="valorInventario"
+                    style="margin-top:15px;"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PRODUCTOS
+        ========================= -->
+
+        <section
+            id="pantallaProductos"
+            class="pantalla"
+        >
+
+            <div class="panel">
+
+                <h2>
+                    Productos
+                </h2>
+
+                <div id="alertaStockBajo"></div>
+
+                <div class="form-grid">
+
+                    <div class="form-grupo">
+                        <label>Buscar</label>
+
+                        <input
+                            type="text"
+                            id="busqueda"
+                            placeholder="Nombre o código"
+                        >
+                    </div>
+
+                    <div class="form-grupo">
+                        <label>Escáner</label>
+
+                        <input
+                            type="text"
+                            placeholder="Código de barras"
+                            onclick="document.getElementById('codigoEscaner').focus()"
+                        >
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <h3>
+                    Agregar producto
+                </h3>
+
+                <div class="form-grid">
+
+                    <div class="form-grupo">
+                        <label>Código</label>
+
+                        <input
+                            type="text"
+    id="codigo"
+    placeholder="Escanea o escribe el código de barras"
+    autocomplete="off"
+                        >
+                    </div>
+
+                    <div class="form-grupo">
+                        <label>Nombre</label>
+
+                        <input
+                            type="text"
+                            id="nombre"
+                            placeholder="Nombre"
+                        >
+                    </div>
+
+                    <div class="form-grupo">
+                        <label>Marca</label>
+
+                        <input
+                            type="text"
+                            id="marca"
+                            placeholder="Marca"
+                        >
+                    </div>
+
+                    <div class="form-grupo">
+                        <label>Precio de compra</label>
+
+                        <input
+                            type="number"
+                            id="precio_compra"
+                            step="0.01"
+                            min="0"
+                            placeholder="$0.00"
+                        >
+                    </div>
+
+                    <div class="form-grupo">
+                        <label>Precio de venta</label>
+
+                        <input
+                            type="number"
+                            id="precio_venta"
+                            step="0.01"
+                            min="0"
+                            placeholder="$0.00"
+                        >
+                    </div>
+
+                    <div class="form-grupo">
+                        <label>Stock</label>
+
+                        <input
+                            type="number"
+                            id="stock"
+                            placeholder="0"
+                        >
+                    </div>
+
+                    <div class="form-grupo">
+                        <label>Stock mínimo</label>
+
+                        <input
+                            type="number"
+                            id="stock_minimo"
+                            min="0"
+                            placeholder="0"
+                        >
+                    </div>
+
+                </div>
+
+                <br>
+
+                <button
+                    id="agregarProducto"
+                    class="btn btn-azul"
+                >
+                    Agregar producto
+                </button>
+
+            </div>
+
+
+            <div class="panel tabla-contenedor">
+
+                <h3>
+                    Catálogo
+                </h3>
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Precio compra</th>
+                            <th>Precio venta</th>
+                            <th>Utilidad</th>
+                            <th>Stock</th>
+                            <th>Acciones</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="productos"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+<!-- =========================
+     CAJA
+========================= -->
+
+<section
+    id="pantallaCaja"
+    class="pantalla"
+>
+
+    <div class="panel">
+
+        <h2>Estado de caja</h2>
+
+        <div id="estadoCaja">
+            <p>Cargando estado de caja...</p>
+        </div>
+
+    </div>
+
+
+    <!-- ABRIR CAJA -->
+
+    <div
+        class="panel"
+        id="panelAbrirCaja"
+        style="display:none;"
+    >
+
+        <h2>Abrir caja</h2>
+
+        <p>
+            Ingresa el efectivo con el que inicia la jornada.
+        </p>
+
+        <div class="form-grid">
+
+            <div class="form-grupo">
+
+                <label>Fondo inicial</label>
+
+                <input
+                    type="number"
+                    id="fondoInicial"
+                    min="0"
+                    step="0.01"
+                    placeholder="$0.00"
+                >
+
+            </div>
+
+        </div>
+
+        <br>
+
+        <button
+            id="abrirCaja"
+            class="btn btn-azul"
+        >
+            Abrir caja
+        </button>
+
+    </div>
+
+
+    <!-- CAJA ABIERTA -->
+
+    <div
+        class="panel"
+        id="panelCajaAbierta"
+        style="display:none;"
+    >
+
+        <h2>Caja abierta</h2>
+
+        <div class="tarjetas">
+
+            <div class="tarjeta">
+
+                <div class="tarjeta-titulo">
+                    Fondo inicial
+                </div>
+
+                <div
+                    class="tarjeta-valor"
+                    id="cajaFondoInicial"
+                >
+                    $0.00
+                </div>
+
+            </div>
+
+
+            <div class="tarjeta">
+
+                <div class="tarjeta-titulo">
+                    Ventas en efectivo
+                </div>
+
+                <div
+                    class="tarjeta-valor"
+                    id="cajaVentasEfectivo"
+                >
+                    $0.00
+                </div>
+
+            </div>
+
+
+            <div class="tarjeta">
+
+                <div class="tarjeta-titulo">
+                    Efectivo esperado
+                </div>
+
+                <div
+                    class="tarjeta-valor"
+                    id="cajaEfectivoEsperado"
+                >
+                    $0.00
+                </div>
+
+            </div>
+
+
+            <div class="tarjeta">
+
+                <div class="tarjeta-titulo">
+                    Total vendido
+                </div>
+
+                <div
+                    class="tarjeta-valor"
+                    id="cajaTotalVendido"
+                >
+                    $0.00
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <h3>Ventas por método de pago</h3>
+
+            <p>
+                Efectivo:
+                <strong id="detalleEfectivo">$0.00</strong>
+            </p>
+
+            <p>
+                Tarjeta:
+                <strong id="detalleTarjeta">$0.00</strong>
+            </p>
+
+            <p>
+                Transferencia:
+                <strong id="detalleTransferencia">$0.00</strong>
+            </p>
+
+            <p>
+                Número de ventas:
+                <strong id="detalleNumeroVentas">0</strong>
+            </p>
+
+        </div>
+
+
+        <button
+            id="actualizarCaja"
+            class="btn btn-gris"
+        >
+            Actualizar caja
+        </button>
+
+        <button
+            id="cerrarCaja"
+            class="btn btn-rojo"
+        >
+            Cerrar caja
+        </button>
+
+    </div>
+
+
+    <!-- CERRAR CAJA -->
+
+    <div
+        class="panel"
+        id="panelCerrarCaja"
+        style="display:none;"
+    >
+
+        <h2>Cerrar caja</h2>
+
+        <p>
+            Cuenta físicamente el efectivo de la caja
+            e ingrésalo aquí.
+        </p>
+
+        <div class="form-grid">
+
+            <div class="form-grupo">
+
+                <label>Efectivo contado</label>
+
+                <input
+                    type="number"
+                    id="efectivoContado"
+                    min="0"
+                    step="0.01"
+                    placeholder="$0.00"
+                >
+
+            </div>
+
+        </div>
+
+        <br>
+
+        <div
+            id="resultadoDiferencia"
+            style="
+                padding:15px;
+                border:1px solid #e5e7eb;
+                border-radius:8px;
+                margin-bottom:15px;
+            "
+        >
+            Ingresa el efectivo contado para calcular la diferencia.
+        </div>
+
+        <button
+            id="confirmarCierreCaja"
+            class="btn btn-rojo"
+        >
+            Confirmar cierre
+        </button>
+
+        <button
+            id="cancelarCierreCaja"
+            class="btn btn-gris"
+        >
+            Cancelar
+        </button>
+
+    </div>
+
+
+    <!-- HISTORIAL DE CORTES -->
+
+    <div class="panel">
+
+        <h2>Historial de cortes</h2>
+
+        <button
+            id="verHistorialCaja"
+            class="btn btn-gris"
+        >
+            Actualizar historial
+        </button>
+
+        <div
+            id="historialCaja"
+            style="margin-top:15px;"
+        ></div>
+
+    </div>
+
+</section>
+
+
+        <!-- =========================
+             INVENTARIO
+        ========================= -->
+
+        <section
+            id="pantallaInventario"
+            class="pantalla"
+        >
+
+            <div class="panel">
+
+                <h2>
+                    Entrada de mercancía
+                </h2>
+
+                <div class="form-grid">
+
+                    <div class="form-grupo">
+
+                  <label>
+    Producto
+</label>
+
+<select id="entradaProductoId">
+    <option value="">Selecciona un producto</option>
+</select>
+
+                    </div>
+
+
+                    <div class="form-grupo">
+
+                        <label>
+                            Cantidad
+                        </label>
+
+                        <input
+                            id="entradaCantidad"
+                            type="number"
+                        >
+
+                    </div>
+
+
+                    <div class="form-grupo">
+
+                        <label>
+                            Motivo
+                        </label>
+
+                        <input
+                            id="entradaMotivo"
+                            type="text"
+                        >
+
+                    </div>
+
+                </div>
+
+                <br>
+
+                <button
+                    id="registrarEntrada"
+                    class="btn btn-azul"
+                >
+                    Registrar entrada
+                </button>
+
+            </div>
+
+
+            <div class="panel">
+
+                <h2>
+                    Historial de movimientos
+                </h2>
+
+                <button
+                    id="verMovimientos"
+                    class="btn btn-gris"
+                >
+                    Actualizar movimientos
+                </button>
+
+                <div
+                    id="historialMovimientos"
+                    style="margin-top:15px;"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CAJA
+        ========================= -->
+
+        <section
+            id="pantallaCaja"
+            class="pantalla"
+        >
+
+            <div class="panel">
+
+                <h2>
+                    Corte de caja
+                </h2>
+
+                <div
+                    style="
+                        display:flex;
+                        gap:10px;
+                        align-items:end;
+                        flex-wrap:wrap;
+                    "
+                >
+
+                    <div class="form-grupo">
+
+                        <label>
+                            Fecha
+                        </label>
+
+                        <input
+                            type="date"
+                            id="fechaCorte"
+                        >
+
+                    </div>
+
+                    <button
+                        id="hoyCorte"
+                        class="btn btn-gris"
+                    >
+                        Hoy
+                    </button>
+
+                    <button
+                        id="verCorte"
+                        class="btn btn-azul"
+                    >
+                        Ver corte
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="corteCaja"
+                class="panel"
+            ></div>
+
+        </section>
+
+
+        <!-- =========================
+             HISTORIAL
+        ========================= -->
+
+        <section
+            id="pantallaHistorial"
+            class="pantalla"
+        >
+
+            <div class="panel">
+
+                <div class="historial-header">
+    <div>
+        <h2>Historial de ventas</h2>
+        <p>Consulta y analiza las ventas registradas.</p>
+    </div>
+</div>
+
+<div class="historial-filtros">
+
+    <input
+        type="text"
+        id="historialBusqueda"
+        placeholder="Venta #, producto o código"
+    >
+
+    <input
+        type="date"
+        id="historialDesde"
+    >
+
+    <input
+        type="date"
+        id="historialHasta"
+    >
+
+    <select id="historialMetodo">
+        <option value="">Todos los métodos</option>
+        <option value="1">Efectivo</option>
+        <option value="2">Tarjeta</option>
+        <option value="3">Transferencia</option>
+    </select>
+
+    <button
+        id="btnBuscarHistorial"
+        class="btn btn-azul"
+    >
+        Buscar
+    </button>
+
+    <button
+        id="btnLimpiarHistorial"
+        class="btn"
+    >
+        Limpiar
+    </button>
+
+</div>
+
+<div class="historial-resumen">
+
+    <div class="historial-card">
+        <span>Ventas</span>
+        <strong id="histNumeroVentas">0</strong>
+    </div>
+
+    <div class="historial-card">
+        <span>Total vendido</span>
+        <strong id="histTotalVendido">$0.00</strong>
+    </div>
+
+    <div class="historial-card">
+        <span>Utilidad</span>
+        <strong id="histUtilidad">$0.00</strong>
+    </div>
+
+    <div class="historial-card">
+        <span>Ticket promedio</span>
+        <strong id="histTicketPromedio">$0.00</strong>
+    </div>
+
+    <div class="historial-card">
+        <span>Efectivo</span>
+        <strong id="histEfectivo">$0.00</strong>
+    </div>
+
+    <div class="historial-card">
+        <span>Tarjeta</span>
+        <strong id="histTarjeta">$0.00</strong>
+    </div>
+
+    <div class="historial-card">
+        <span>Transferencia</span>
+        <strong id="histTransferencia">$0.00</strong>
+    </div>
+
+    <div class="historial-card">
+        <span>Unidades vendidas</span>
+        <strong id="histUnidades">0</strong>
+    </div>
+
+</div>
+
+<div class="historial-tabla-contenedor">
+
+    <table class="historial-tabla">
+
+        <thead>
+            <tr>
+                <th>Venta</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Total</th>
+                <th>Método</th>
+                <th>Unidades</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody id="historialTablaBody">
+        </tbody>
+
+    </table>
+
+</div>
+
+<div
+    id="historialEstado"
+    class="historial-estado"
+>
+    Cargando historial...
+</div>
+
+<div
+    id="historialPaginacion"
+    class="historial-paginacion"
+></div>
+
+<div class="historial-analisis">
+
+    <h3>Análisis de ventas</h3>
+
+    <div class="historial-grafica">
+        <h4>Ventas e ingresos por día</h4>
+        <canvas id="graficaVentasDia"></canvas>
+    </div>
+
+    <div class="historial-grafica">
+        <h4>Utilidad por día</h4>
+        <canvas id="graficaUtilidadDia"></canvas>
+    </div>
+
+    <div class="historial-grafica">
+        <h4>Ventas por método de pago</h4>
+        <canvas id="graficaMetodosPago"></canvas>
+    </div>
+
+    <div class="historial-productos-top">
+
+        <h4>Productos más vendidos</h4>
+
+        <div id="historialProductosTop"></div>
+
+    </div>
+
+</div>
+
+<div
+    id="modalDetalleVenta"
+    class="modal-historial"
+>
+    <div class="modal-historial-contenido">
+
+        <button
+            id="cerrarDetalleVenta"
+            class="modal-historial-cerrar"
+        >
+            ×
+        </button>
+
+        <div id="detalleVentaContenido"></div>
+
+    </div>
+</div>
+
+        </section>
+
+
+        <!-- =========================
+             REPORTES
+        ========================= -->
+
+        <section
+            id="pantallaReportes"
+            class="pantalla"
+        >
+
+            <div
+                id="seccionReportes"
+                style="display:block;"
+            >
+
+                <div class="panel">
+
+                    <h2>
+                        Reportes
+                    </h2>
+
+                    <div class="form-grupo">
+
+                        <label>
+                            Fecha
+                        </label>
+
+                        <input
+                            type="date"
+                            id="fechaReporte"
+                        >
+
+                    </div>
+
+                    <br>
+
+                    <button
+                        id="consultarReporte"
+                        class="btn btn-azul"
+                    >
+                        Consultar reporte
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="resultadoReporte"
+                    class="panel"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             USUARIOS
+        ========================= -->
+
+        <section
+            id="pantallaUsuarios"
+            class="pantalla"
+        >
+
+            <div
+                id="seccionUsuarios"
+                style="display:block;"
+            >
+
+                <div class="panel">
+
+                    <h2>
+                        Usuarios
+                    </h2>
+
+                    <button
+                        id="crearUsuario"
+                        class="btn btn-azul"
+                    >
+                        + Crear usuario
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="formularioUsuario"
+                    class="panel"
+                    style="display:none;"
+                >
+
+                    <h3>
+                        Nuevo usuario
+                    </h3>
+
+                    <div class="form-grid">
+
+                        <div class="form-grupo">
+
+                            <label>
+                                Nombre
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nuevoNombre"
+                            >
+
+                        </div>
+
+
+                        <div class="form-grupo">
+
+                            <label>
+                                Usuario
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nuevoUsuario"
+                            >
+
+                        </div>
+
+
+                        <div class="form-grupo">
+
+                            <label>
+                                Contraseña
+                            </label>
+
+                            <input
+                                type="password"
+                                id="nuevaPassword"
+                            >
+
+                        </div>
+
+
+                        <div class="form-grupo">
+
+                            <label>
+                                Rol
+                            </label>
+
+                            <select id="nuevoRol">
+
+                                <option value="Empleado">
+                                    Empleado
+                                </option>
+
+                                <option value="Admin">
+                                    Admin
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <br>
+
+                    <button
+                        id="guardarUsuario"
+                        class="btn btn-azul"
+                    >
+                        Guardar usuario
+                    </button>
+
+                    <button
+                        id="cancelarUsuario"
+                        class="btn btn-gris"
+                    >
+                        Cancelar
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="listaUsuarios"
+                    class="panel"
+                ></div>
+
+            </div>
+
+        </section>
+
+<div id="ventanaCobro">
+
+    <div class="cobro-modal">
+
+        <h2>Cobrar venta</h2>
+
+        <p id="totalCobro"></p>
+
+        <label>Método de pago</label>
+
+        <select id="metodoPago">
+            <option value="1">Efectivo</option>
+            <option value="2">Tarjeta</option>
+            <option value="3">Transferencia</option>
+        </select>
+
+        <br><br>
+
+        <label>Pago recibido</label>
+
+        <input
+            type="number"
+            id="pagoRecibido"
+            step="0.01"
+        >
+
+        <br><br>
+
+        <button
+            id="confirmarCobro"
+            class="btn btn-azul btn-grande"
+        >
+            Confirmar cobro
+        </button>
+
+        <button
+            id="cancelarCobro"
+            class="btn btn-gris btn-grande"
+        >
+            Cancelar
+        </button>
+
+    </div>
+<div id="ventanaTicket" style="
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    align-items:center;
+    justify-content:center;
+    z-index:1100;
+    padding:20px;
+">
+
+    <div style="
+        background:white;
+        width:380px;
+        max-width:100%;
+        border-radius:10px;
+        padding:20px;
+    ">
+
+        <div id="ticketContenido"></div>
+
+        <br>
+
+        <button
+            id="imprimirTicket"
+            class="btn btn-azul btn-grande"
+        >
+            Imprimir ticket
+        </button>
+
+        <button
+            id="cerrarTicket"
+            class="btn btn-gris btn-grande"
+        >
+            Cerrar
+        </button>
+
+    </div>
+</div>
+</div>
+    </main>
+
+</div>
+    <script>
+ 
+        let productos = [];
+        let carrito = [];
+        let totalVenta = 0;
+        // =========================
+// CARGAR DASHBOARD
+// =========================
+
+ async function cargarDashboard() {
+
+    try {
+
+        const tokenPestana =
+            sessionStorage.getItem('tokenPestana');
+
+        const respuestaSesion =
+            await fetch('/sesion', {
+                headers: {
+                    'x-token-pestana': tokenPestana
+                }
+            });
+
+        if (!respuestaSesion.ok) {
+            return;
+        }
+
+        const sesion =
+            await respuestaSesion.json();
+
+        const respuesta =
+            await fetch('/dashboard', {
+                headers: {
+                    'x-token-pestana': tokenPestana
+                }
+            });
+
+        if (!respuesta.ok) {
+            throw new Error('Error al obtener dashboard');
+        }
+
+        const datos =
+            await respuesta.json();
+
+        document.getElementById('totalProductos').textContent =
+            datos.total_productos;
+
+        document.getElementById('productosStockBajo').textContent =
+            datos.productos_stock_bajo;
+
+        if (sesion.rol === 'Admin') {
+
+            document.getElementById('ventasHoy').textContent =
+                datos.ventas_hoy;
+
+            document.getElementById('vendidoHoy').textContent =
+                `$${Number(datos.vendido_hoy).toFixed(2)}`;
+
+            document.getElementById('utilidadHoy').textContent =
+                `$${Number(datos.utilidad_hoy).toFixed(2)}`;
+        }
+
+    } catch (error) {
+
+        console.error('ERROR AL CARGAR DASHBOARD:', error);
+
+    }
+}
+
+
+        // =========================
+        // CARGAR PRODUCTOS
+        // =========================
+
+        async function cargarProductos() {
+
+            try {
+
+                const tokenPestana =
+    sessionStorage.getItem('tokenPestana');
+
+const respuesta =
+    await fetch('/productos', {
+        headers: {
+            'x-token-pestana': tokenPestana
+        }
+    });
+                if (!respuesta.ok) {
+                    throw new Error('Error al obtener productos');
+                }
+
+                productos =
+                    await respuesta.json();
+                    const selectorEntrada = document.getElementById('entradaProductoId');
+
+selectorEntrada.innerHTML =
+    '<option value="">Selecciona un producto</option>';
+
+productos.forEach(producto => {
+    const opcion = document.createElement('option');
+
+    opcion.value = producto.id;
+    opcion.textContent =
+        `${producto.codigo} - ${producto.nombre}`;
+
+    selectorEntrada.appendChild(opcion);
+});
+
+                mostrarProductos(productos);
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert('No se pudieron cargar los productos');
+            }
+        }
+
+
+        // =========================
+        // MOSTRAR PRODUCTOS
+        // =========================
+ function mostrarProductos(lista) {
+
+    const tabla =
+        document.getElementById('productos');
+
+    tabla.innerHTML = '';
+
+    const alerta =
+        document.getElementById('alertaStockBajo');
+
+    const productosBajos =
+        lista.filter(
+            producto =>
+                producto.stock <= producto.stock_minimo
+        );
+
+    if (productosBajos.length > 0) {
+
+        alerta.innerHTML = `
+            <div style="
+                padding: 12px;
+                margin: 10px 0;
+                border: 1px solid #ff0000;
+                border-radius: 6px;
+            ">
+                <strong>
+                    🔴 Stock bajo:
+                    ${productosBajos.length} producto(s)
+                </strong>
+
+                <br><br>
+
+                ${productosBajos.map(producto => `
+                    <div>
+                        ${producto.codigo} -
+                        ${producto.nombre}:
+                        <strong style="color:red;">
+                            ${producto.stock}
+                        </strong>
+                        unidades
+                    </div>
+                `).join('')}
+            </div>
+        `;
+
+    } else {
+
+        alerta.innerHTML = '';
+
+    }
+
+    lista.forEach((producto, index) => {
+
+        const fila =
+            document.createElement('tr');
+
+        fila.innerHTML = `
+
+            <td>${index + 1}</td>
+
+            <td>${producto.codigo}</td>
+
+            <td>${producto.nombre}</td>
+
+            <td>
+                $${Number(
+                    producto.precio_compra
+                ).toFixed(2)}
+            </td>
+
+            <td>
+                $${Number(
+                    producto.precio_venta
+                ).toFixed(2)}
+            </td>
+
+            <td>
+                $${(
+                    Number(producto.precio_venta) -
+                    Number(producto.precio_compra)
+                ).toFixed(2)}
+            </td>
+
+            <td>
+                <span style="
+                    color: ${
+                        producto.stock <= producto.stock_minimo
+                            ? 'red'
+                            : 'inherit'
+                    };
+
+                    font-weight: ${
+                        producto.stock <= producto.stock_minimo
+                            ? 'bold'
+                            : 'normal'
+                    };
+                ">
+                    ${producto.stock}
+                </span>
+            </td>
+
+            <td>
+
+                <button
+                    onclick="agregarAlCarrito(${producto.id})"
+                >
+                    Agregar
+                </button>
+
+                <button
+                    onclick="editarProducto(${producto.id})"
+                >
+                    Editar
+                </button>
+
+                <button
+                    onclick="eliminarProducto(${producto.id})"
+                >
+                    Eliminar
+                </button>
+
+            </td>
+
+        `;
+
+        tabla.appendChild(fila);
+
+    });
+}
+
+        // =========================
+        // BUSCADOR
+        // =========================
+
+        document
+            .getElementById('busqueda')
+            .addEventListener('input', function () {
+
+                const texto =
+                    this.value.toLowerCase();
+
+
+                const filtrados =
+                    productos.filter(producto =>
+
+                        String(producto.nombre)
+                            .toLowerCase()
+                            .includes(texto)
+
+                        ||
+
+                        String(producto.codigo)
+                            .toLowerCase()
+                            .includes(texto)
+                    );
+
+
+                mostrarProductos(filtrados);
+            });
+
+
+        // =========================
+        // AGREGAR PRODUCTO
+        // =========================
+
+        document
+            .getElementById('agregarProducto')
+            .addEventListener('click', async function () {
+
+                const codigo =
+                    document
+                        .getElementById('codigo')
+                        .value
+                        .trim();
+
+
+                const nombre =
+                    document
+                        .getElementById('nombre')
+                        .value
+                        .trim();
+
+
+                const marca =
+                    document
+                        .getElementById('marca')
+                        .value
+                        .trim();
+
+
+                const precio_venta =
+                    Number(
+                        document
+                            .getElementById('precio_venta')
+                            .value
+                    );
+                    const precio_compra =
+    Number(
+        document
+            .getElementById('precio_compra')
+            .value
+    );
+
+
+                const stock =
+                    Number(
+                        document
+                            .getElementById('stock')
+                            .value
+                    );
+                    const stock_minimo =
+    Number(
+        document
+            .getElementById('stock_minimo')
+            .value
+    );
+
+
+                if (!codigo || !nombre) {
+
+                    alert(
+                        'Completa código y nombre'
+                    );
+
+                    return;
+                }
+
+
+                try {
+
+                    const respuesta =
+                        await fetch('/productos', {
+
+                            method: 'POST',
+
+                             headers: {
+    'Content-Type':
+        'application/json',
+    'x-token-pestana':
+        sessionStorage.getItem('tokenPestana')
+},
+
+                            body: JSON.stringify({
+
+                                codigo,
+                                nombre,
+                                marca,
+                                precio_compra,
+                                precio_venta,
+                                stock,
+                                stock_minimo
+
+                            })
+                        });
+
+
+                    const resultado =
+                        await respuesta.json();
+
+
+                    if (!respuesta.ok) {
+
+                        alert(
+                            resultado.error ||
+                            'No se pudo agregar el producto'
+                        );
+
+                        return;
+                    }
+
+
+                    alert(
+                        'Producto agregado correctamente'
+                    );
+
+
+                    document
+                        .getElementById('codigo')
+                        .value = '';
+
+                    document
+                        .getElementById('nombre')
+                        .value = '';
+
+                    document
+                        .getElementById('marca')
+                        .value = '';
+
+                    document
+                        .getElementById('precio_venta')
+                        .value = '';
+
+                    document
+                        .getElementById('stock')
+                        .value = '';
+
+
+                    cargarProductos();
+
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    alert(
+                        'Error al agregar producto'
+                    );
+                }
+
+            });
+
+
+        // =========================
+        // EDITAR PRODUCTO
+        // =========================
+async function editarProducto(id) {
+
+    const producto =
+        productos.find(
+            p => Number(p.id) === Number(id)
+        );
+
+    if (!producto) {
+        return;
+    }
+
+    const codigo =
+        prompt(
+            'Código de barras:',
+            producto.codigo || ''
+        );
+
+    if (codigo === null) {
+        return;
+    }
+
+    const nombre =
+        prompt(
+            'Nombre:',
+            producto.nombre || ''
+        );
+
+    if (nombre === null) {
+        return;
+    }
+
+    const marca =
+        prompt(
+            'Marca:',
+            producto.marca || ''
+        );
+
+    if (marca === null) {
+        return;
+    }
+
+    const categoria =
+        prompt(
+            'Categoría:',
+            producto.categoria || ''
+        );
+
+    if (categoria === null) {
+        return;
+    }
+
+    const descripcion =
+        prompt(
+            'Descripción:',
+            producto.descripcion || ''
+        );
+
+    if (descripcion === null) {
+        return;
+    }
+
+    const precioCompra =
+        prompt(
+            'Precio de compra:',
+            producto.precio_compra ?? 0
+        );
+
+    if (precioCompra === null) {
+        return;
+    }
+
+    const precioVenta =
+        prompt(
+            'Precio de venta:',
+            producto.precio_venta ?? 0
+        );
+
+    if (precioVenta === null) {
+        return;
+    }
+
+    const stockMinimo =
+        prompt(
+            'Stock mínimo:',
+            producto.stock_minimo ?? 0
+        );
+
+    if (stockMinimo === null) {
+        return;
+    }
+
+    const ubicacion =
+        prompt(
+            'Ubicación:',
+            producto.ubicacion || ''
+        );
+
+    if (ubicacion === null) {
+        return;
+    }
+
+    try {
+
+        const respuesta =
+            await fetch(
+                `/productos/${id}`,
+                {
+                    method: 'PUT',
+
+                    headers: {
+                        'Content-Type':
+                            'application/json'
+                    },
+
+                    body: JSON.stringify({
+
+                        codigo:
+                            codigo.trim(),
+
+                        nombre:
+                            nombre.trim(),
+
+                        marca:
+                            marca.trim(),
+
+                        categoria:
+                            categoria.trim(),
+
+                        descripcion:
+                            descripcion.trim(),
+
+                        precio_compra:
+                            Number(precioCompra),
+
+                        precio_venta:
+                            Number(precioVenta),
+
+                        stock_minimo:
+                            Number(stockMinimo),
+
+                        ubicacion:
+                            ubicacion.trim()
+
+                    })
+                }
+            );
+
+        const resultado =
+            await respuesta.json();
+
+        if (!respuesta.ok) {
+
+            alert(
+                resultado.error ||
+                'No se pudo actualizar'
+            );
+
+            return;
+        }
+
+        alert(
+            'Producto actualizado correctamente'
+        );
+
+        cargarProductos();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            'Error al editar producto'
+        );
+    }
+}
+
+
+        // =========================
+        // ELIMINAR PRODUCTO
+        // =========================
+
+        async function eliminarProducto(id) {
+
+            const producto =
+                productos.find(
+                    p => Number(p.id) === Number(id)
+                );
+
+
+            if (!producto) {
+                return;
+            }
+
+
+            const confirmar =
+                confirm(
+                    `¿Eliminar "${producto.nombre}"?`
+                );
+
+
+            if (!confirmar) {
+                return;
+            }
+
+
+            try {
+
+               const respuesta =
+    await fetch(
+        `/productos/${id}`,
+        {
+            method: 'DELETE',
+            headers: {
+                'x-token-pestana':
+                    sessionStorage.getItem('tokenPestana')
+            }
+        }
+    );
+
+
+                const resultado =
+                    await respuesta.json();
+
+
+                if (!respuesta.ok) {
+
+                    alert(
+                        resultado.error ||
+                        'No se pudo eliminar'
+                    );
+
+                    return;
+                }
+
+
+                alert(
+                    'Producto eliminado correctamente'
+                );
+
+
+                cargarProductos();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    'Error al eliminar producto'
+                );
+            }
+        }
+
+
+        // =========================
+        // AGREGAR AL CARRITO
+        // =========================
+
+        function agregarAlCarrito(id) {
+
+            const producto =
+                productos.find(
+                    p => Number(p.id) === Number(id)
+                );
+
+
+            if (!producto) {
+                return;
+            }
+
+
+            if (Number(producto.stock) <= 0) {
+
+                alert(
+                    'Producto sin stock'
+                );
+
+                return;
+            }
+
+
+            const existente =
+                carrito.find(
+                    p => Number(p.id) === Number(id)
+                );
+
+
+            if (existente) {
+
+                if (
+                    existente.cantidad >=
+                    Number(producto.stock)
+                ) {
+
+                    alert(
+                        'No hay más stock disponible'
+                    );
+
+                    return;
+                }
+
+
+                existente.cantidad++;
+
+            } else {
+
+                carrito.push({
+
+                    id:
+                        producto.id,
+
+                    nombre:
+                        producto.nombre,
+
+                    precio:
+                        Number(
+                            producto.precio_venta
+                        ),
+
+                    cantidad:
+                        1,
+
+                    stock:
+                        Number(producto.stock)
+
+                });
+            }
+
+
+            mostrarCarrito();
+        }
+
+
+        // =========================
+        // MOSTRAR CARRITO
+        // =========================
+
+        function mostrarCarrito() {
+
+            const contenedor =
+                document.getElementById('carrito');
+
+
+            if (carrito.length === 0) {
+
+                contenedor.innerHTML =
+                    '<p>Carrito vacío</p>';
+
+                return;
+            }
+
+
+            let html = '';
+
+            let total = 0;
+
+
+            carrito.forEach(
+                (producto, indice) => {
+
+                    const subtotal =
+                        producto.precio *
+                        producto.cantidad;
+
+
+                    total += subtotal;
+
+
+                    html += `
+
+                        <div>
+
+                            <strong>
+                                ${producto.nombre}
+                            </strong>
+
+                            <br><br>
+
+                            ${producto.cantidad}
+                            x
+                            $${producto.precio.toFixed(2)}
+
+                            =
+                            $${subtotal.toFixed(2)}
+
+                            <br><br>
+
+                            <button
+                                onclick="disminuirCantidad(${indice})"
+                            >
+                                −
+                            </button>
+
+                            <button
+                                onclick="aumentarCantidad(${indice})"
+                            >
+                                +
+                            </button>
+
+                            <button
+                                onclick="eliminarDelCarrito(${indice})"
+                            >
+                                Eliminar
+                            </button>
+
+                        </div>
+
+                        <hr>
+                    `;
+                }
+            );
+
+
+            html += `
+
+                <h3>
+                    Total:
+                    $${total.toFixed(2)}
+                </h3>
+
+            `;
+
+
+            contenedor.innerHTML =
+                html;
+        }
+
+
+        // =========================
+        // AUMENTAR CANTIDAD
+        // =========================
+
+        function aumentarCantidad(indice) {
+
+            const producto =
+                carrito[indice];
+
+
+            if (
+                producto.cantidad >=
+                producto.stock
+            ) {
+
+                alert(
+                    'No hay más stock disponible'
+                );
+
+                return;
+            }
+
+
+            producto.cantidad++;
+
+            mostrarCarrito();
+        }
+
+
+        // =========================
+        // DISMINUIR CANTIDAD
+        // =========================
+
+        function disminuirCantidad(indice) {
+
+            carrito[indice].cantidad--;
+
+
+            if (
+                carrito[indice].cantidad <= 0
+            ) {
+
+                carrito.splice(indice, 1);
+            }
+
+
+            mostrarCarrito();
+        }
+
+
+        // =========================
+        // ELIMINAR DEL CARRITO
+        // =========================
+
+        function eliminarDelCarrito(indice) {
+
+            carrito.splice(indice, 1);
+
+            mostrarCarrito();
+        }
+
+
+        // =========================
+        // NUEVA VENTA
+        // =========================
+
+        document
+            .getElementById('nuevaVenta')
+            .addEventListener(
+                'click',
+                function () {
+
+                    carrito = [];
+
+                    totalVenta = 0;
+
+
+                    document
+                        .getElementById(
+                            'ventanaCobro'
+                        )
+                        .style.display = 'none';
+
+
+                    document
+                        .getElementById(
+                            'pagoRecibido'
+                        )
+                        .value = '';
+
+
+                    mostrarCarrito();
+                }
+            );
+
+        // =========================
+        // CANCELAR COBRO
+        // =========================
+
+        document
+            .getElementById('cancelarCobro')
+            .addEventListener(
+                'click',
+                function () {
+
+                    document
+                        .getElementById(
+                            'ventanaCobro'
+                        )
+                        .style.display =
+                        'none';
+                }
+            );
+
+
+        // =========================
+        // HISTORIAL
+        // =========================
+
+document.getElementById('verMovimientos').addEventListener('click', async () => {
+    try {
+        const respuesta = await fetch('/movimientos');
+        const movimientos = await respuesta.json();
+
+        const contenedor = document.getElementById('historialMovimientos');
+
+        if (movimientos.length === 0) {
+            contenedor.innerHTML = '<p>No hay movimientos registrados.</p>';
+            return;
+        }
+
+        contenedor.innerHTML = movimientos.map(movimiento => `
+            <div>
+                <strong>${movimiento.fecha}</strong>
+                - ${movimiento.codigo}
+                - ${movimiento.nombre}
+                - ${movimiento.tipo}
+                - Cantidad: ${movimiento.cantidad}
+                - ${movimiento.motivo || ''}
+            </div>
+        `).join('');
+
+    } catch (error) {
+        console.error(error);
+        alert('No se pudieron cargar los movimientos');
+    }
+});
+        // =========================
+        // DETALLE DE VENTA
+        // =========================
+
+        async function verDetalleVenta(id) {
+
+    try {
+
+         const respuesta =
+    await fetch(`/ventas/${id}/detalle`, {
+        headers: {
+            'x-token-pestana':
+                sessionStorage.getItem('tokenPestana')
+        }
+    });
+      const detalle =
+            await respuesta.json();
+
+        if (!respuesta.ok) {
+            throw new Error(
+                detalle.error || 'No se pudo obtener el detalle'
+            );
+        }
+
+        let texto =
+            `DETALLE DE VENTA #${id}\n\n`;
+
+        detalle.forEach(producto => {
+
+            texto +=
+                `Producto: ${producto.nombre}\n`;
+
+            texto +=
+                `Cantidad: ${producto.cantidad}\n`;
+
+            texto +=
+                `Precio: $${Number(
+                    producto.precio
+                ).toFixed(2)}\n`;
+
+            texto +=
+                `Subtotal: $${Number(
+                    producto.subtotal
+                ).toFixed(2)}\n\n`;
+        });
+
+        alert(texto);
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            'No se pudo obtener el detalle: ' +
+            error.message
+        );
+    }
+}
+
+        // =========================
+        // ESCÁNER
+        // =========================
+
+        // ================================
+// ESCÁNER DE CÓDIGO DE BARRAS
+// ================================
+
+const codigoEscaner =
+    document.getElementById('codigoEscaner');
+
+if (codigoEscaner) {
+
+    codigoEscaner.addEventListener(
+        'input',
+        function () {
+
+            const codigo =
+                this.value.trim();
+
+            if (!codigo) {
+                return;
+            }
+
+            const producto =
+                productos.find(
+                    producto =>
+                        String(producto.codigo)
+                            .trim()
+                            .toLowerCase() ===
+                        codigo.toLowerCase()
+                );
+
+            if (!producto) {
+                return;
+            }
+
+            agregarAlCarrito(
+                producto.id
+            );
+
+            this.value = '';
+
+            this.focus();
+        }
+    );
+}
+
+        // =========================
+        // CORTE DE CAJA
+        // =========================
+
+        document
+            .getElementById('verCorte')
+            .addEventListener(
+                'click',
+                async function () {
+
+                    const fecha =
+                        document
+                            .getElementById(
+                                'fechaCorte'
+                            )
+                            .value;
+
+
+                    try {
+
+                        const tokenPestana = sessionStorage.getItem('tokenPestana');
+
+const respuesta =
+    await fetch(
+        `/corte-caja?fecha=${encodeURIComponent(fecha)}`,
+        {
+            headers: {
+                'x-token-pestana': tokenPestana
+            }
+        }
+    );
+
+
+                        const corte =
+                            await respuesta.json();
+
+
+                        document
+                            .getElementById(
+                                'corteCaja'
+                            )
+                            .innerHTML = `
+
+                                <h3>
+                                    Resumen
+                                </h3>
+
+                                <p>
+                                    Ventas:
+                                    ${corte.numero_ventas}
+                                </p>
+
+                                <p>
+                                    Efectivo:
+                                    $${Number(
+                                        corte.efectivo
+                                    ).toFixed(2)}
+                                </p>
+
+                                <p>
+                                    Tarjeta:
+                                    $${Number(
+                                        corte.tarjeta
+                                    ).toFixed(2)}
+                                </p>
+
+                                <p>
+                                    Transferencia:
+                                    $${Number(
+                                        corte.transferencia
+                                    ).toFixed(2)}
+                                </p>
+
+                                <h3>
+                                    Total vendido:
+                                    $${Number(
+                                        corte.total_vendido
+                                    ).toFixed(2)}
+                                </h3>
+                            `;
+
+
+                    } catch (error) {
+
+                        console.error(error);
+
+                        alert(
+                            'No se pudo obtener el corte de caja'
+                        );
+                    }
+
+                }
+            );
+
+
+        // =========================
+        // BOTÓN HOY
+        // =========================
+
+        document
+            .getElementById('hoyCorte')
+            .addEventListener(
+                'click',
+                function () {
+
+                    const hoy =
+                        new Date();
+
+
+                    const fecha =
+                        hoy.toLocaleDateString(
+                            'en-CA'
+                        );
+
+
+                    document
+                        .getElementById(
+                            'fechaCorte'
+                        )
+                        .value =
+                        fecha;
+                }
+            );
+
+
+        // =========================
+        // INICIAR SISTEMA
+        // =========================
+
+        cargarProductos();
+
+        mostrarCarrito();
+document.getElementById('registrarEntrada').addEventListener('click', async () => {
+    const producto_id = document.getElementById('entradaProductoId').value;
+    const cantidad = document.getElementById('entradaCantidad').value;
+    const motivo = document.getElementById('entradaMotivo').value;
+
+    if (!producto_id || !cantidad) {
+        alert('Ingresa el ID del producto y la cantidad');
+        return;
+    }
+
+    try {
+        const respuesta = await fetch('/movimientos/entrada', {
+            method: 'POST',
+            headers: {
+    'Content-Type': 'application/json',
+    'x-token-pestana':
+        sessionStorage.getItem('tokenPestana')
+},
+            body: JSON.stringify({
+                producto_id: Number(producto_id),
+                cantidad: Number(cantidad),
+                motivo: motivo
+            })
+        });
+
+        const datos = await respuesta.json();
+
+        if (!respuesta.ok) {
+            alert(datos.error);
+            return;
+        }
+
+        alert('Entrada registrada correctamente');
+
+        document.getElementById('entradaProductoId').value = '';
+        document.getElementById('entradaCantidad').value = '';
+        document.getElementById('entradaMotivo').value = '';
+
+        cargarProductos();
+
+    } catch (error) {
+        console.error(error);
+        alert('No se pudo registrar la entrada');
+    }
+});
+ document.getElementById('verInventario').addEventListener('click', async () => {
+
+    try {
+
+        const tokenPestana = sessionStorage.getItem('tokenPestana');
+
+        const respuesta = await fetch('/inventario-valor', {
+            method: 'POST',
+            headers: {
+                'x-token-pestana': tokenPestana
+            }
+        });
+
+        const datos = await respuesta.json();
+
+        if (!respuesta.ok) {
+            alert(datos.error);
+            return;
+        }
+
+        document.getElementById('valorInventario').innerHTML = `
+            <strong>Inventario a precio de compra: $${Number(datos.inventario_costo).toFixed(2)}</strong><br>
+            <strong>Valor del inventario a precio de venta: $${Number(datos.inventario_venta).toFixed(2)}</strong><br>
+            <strong>Utilidad potencial: $${Number(datos.utilidad_potencial).toFixed(2)}</strong>
+        `;
+
+    } catch (error) {
+
+        console.error(error);
+        alert('No se pudo obtener el valor del inventario');
+
+    }
+
+});
+  document.getElementById('navReportes').addEventListener('click', async () => {
+
+    try {
+
+        const tokenPestana = sessionStorage.getItem('tokenPestana');
+
+        const respuesta = await fetch('/sesion', {
+            headers: {
+                'x-token-pestana': tokenPestana
+            }
+        });
+
+        const datos = await respuesta.json();
+
+        if (!respuesta.ok) {
+            alert(datos.error);
+            return;
+        }
+
+        if (datos.rol !== 'Admin') {
+            alert('No tienes permisos de administrador');
+            return;
+        }
+
+        document.getElementById('seccionReportes').style.display = 'block';
+
+    } catch (error) {
+
+        console.error(error);
+        alert('No se pudo comprobar la sesión');
+
+    }
+
+});
+  document.getElementById('navUsuarios').addEventListener('click', async () => {
+
+    try {
+
+        const tokenPestana =
+            sessionStorage.getItem('tokenPestana');
+
+        const respuesta = await fetch('/usuarios', {
+            headers: {
+                'x-token-pestana': tokenPestana
+            }
+        });
+
+        const datos = await respuesta.json();
+
+        if (!respuesta.ok) {
+            alert(datos.error);
+            return;
+        }
+
+        document.getElementById('listaUsuarios').innerHTML =
+            datos.map(usuario => `
+                <p>
+                    <strong>${usuario.nombre}</strong>
+                    — ${usuario.usuario}
+                    — ${usuario.rol}
+
+                    <button onclick="cambiarPassword(${usuario.id})">
+                        Cambiar contraseña
+                    </button>
+
+                    <button onclick="cambiarEstadoUsuario(${usuario.id})">
+                        ${usuario.activo ? 'Desactivar' : 'Activar'}
+                    </button>
+                </p>
+            `).join('');
+
+    } catch (error) {
+
+        console.error(error);
+        alert('No se pudieron cargar los usuarios');
+
+    }
+
+});
+async function cambiarPassword(id) {
+
+    const nuevaPassword = prompt('Escribe la nueva contraseña:');
+
+    if (!nuevaPassword) {
+        return;
+    }
+
+    try {
+
+        const respuesta = await fetch(`/usuarios/${id}/password`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-token-pestana':
+                    sessionStorage.getItem('tokenPestana')
+            },
+            body: JSON.stringify({
+                password: nuevaPassword
+            })
+        });
+
+        const datos = await respuesta.json();
+
+        if (!respuesta.ok) {
+            alert(datos.error);
+            return;
+        }
+
+        alert('Contraseña cambiada correctamente');
+
+    } catch (error) {
+
+        console.error(error);
+        alert('No se pudo cambiar la contraseña');
+
+    }
+
+}
+async function cambiarEstadoUsuario(id) {
+
+    const confirmar = confirm(
+        '¿Quieres cambiar el estado de este usuario?'
+    );
+
+    if (!confirmar) {
+        return;
+    }
+
+    try {
+
+        const respuesta = await fetch(`/usuarios/${id}/estado`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-token-pestana':
+                    sessionStorage.getItem('tokenPestana')
+            }
+        });
+
+        const datos = await respuesta.json();
+
+        if (!respuesta.ok) {
+            alert(datos.error);
+            return;
+        }
+
+        alert(datos.mensaje);
+        
+document.getElementById('navUsuarios').click();
+    } catch (error) {
+
+        console.error(error);
+        alert('No se pudo cambiar el estado del usuario');
+
+    }
+
+}
+document.getElementById('crearUsuario').addEventListener('click', () => {
+
+    const formulario =
+        document.getElementById('formularioUsuario');
+
+    if (formulario.style.display === 'none') {
+        formulario.style.display = 'block';
+    } else {
+        formulario.style.display = 'none';
+    }
+
+});
+document.getElementById('guardarUsuario').addEventListener('click', async () => {
+
+    const nombre = document.getElementById('nuevoNombre').value.trim();
+    const usuario = document.getElementById('nuevoUsuario').value.trim();
+    const password = document.getElementById('nuevaPassword').value;
+    const rol = document.getElementById('nuevoRol').value;
+
+    if (!nombre || !usuario || !password) {
+        alert('Completa todos los campos');
+        return;
+    }
+
+    try {
+
+        const respuesta = await fetch('/usuarios', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-token-pestana':
+                    sessionStorage.getItem('tokenPestana')
+            },
+            body: JSON.stringify({
+                nombre,
+                usuario,
+                password,
+                rol
+            })
+        });
+
+        const datos = await respuesta.json();
+
+        if (!respuesta.ok) {
+            alert(datos.error);
+            return;
+        }
+
+        alert('Usuario creado correctamente');
+
+        document.getElementById('nuevoNombre').value = '';
+        document.getElementById('nuevoUsuario').value = '';
+        document.getElementById('nuevaPassword').value = '';
+
+        document.getElementById('formularioUsuario').style.display = 'none';
+
+    } catch (error) {
+
+        console.error(error);
+        alert('No se pudo crear el usuario');
+
+    }
+
+});
+document.getElementById('consultarReporte').addEventListener('click', async () => {
+
+    const fecha = document.getElementById('fechaReporte').value;
+
+    if (!fecha) {
+        alert('Selecciona una fecha');
+        return;
+    }
+
+    try {
+
+        const tokenPestana = sessionStorage.getItem('tokenPestana');
+
+const respuesta = await fetch(
+    `/reporte-ventas?fecha=${fecha}`,
+    {
+        headers: {
+            'x-token-pestana': tokenPestana
+        }
+    }
+);
+        const datos = await respuesta.json();
+
+        if (!respuesta.ok) {
+            throw new Error(datos.error);
+        }
+
+        document.getElementById('resultadoReporte').innerHTML = `
+            <hr>
+            <h3>Reporte del ${fecha}</h3>
+
+            <p><strong>Ventas:</strong> ${datos.numero_ventas}</p>
+
+            <p><strong>Total vendido:</strong>
+            $${Number(datos.total_vendido).toFixed(2)}</p>
+
+            <p><strong>Efectivo:</strong>
+            $${Number(datos.efectivo).toFixed(2)}</p>
+
+            <p><strong>Tarjeta:</strong>
+            $${Number(datos.tarjeta).toFixed(2)}</p>
+
+            <p><strong>Transferencia:</strong>
+            $${Number(datos.transferencia).toFixed(2)}</p>
+            <p><strong>Utilidad:</strong>
+$${Number(datos.utilidad).toFixed(2)}</p>
+        `;
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert('No se pudo obtener el reporte');
+
+    }
+
+});
+ async function cargarSesion() {
+
+     const tokenPestana = sessionStorage.getItem('tokenPestana');
+
+const respuesta = await fetch('/sesion', {
+    headers: {
+        'x-token-pestana': tokenPestana
+    }
+});
+    if (!respuesta.ok) {
+        window.location.href = '/login.html';
+        return;
+    }
+
+    const datos = await respuesta.json();
+    if (datos.rol !== 'Admin' || datos.admin_principal !== true) {
+    document.getElementById('abrirUsuarios').style.display = 'none';
+}
+if (datos.rol === 'Empleado' ||
+    datos.admin_principal !== true) {
+        document.getElementById('ventasHoyCaja').style.display = 'none';
+document.getElementById('vendidoHoyCaja').style.display = 'none';
+document.getElementById('utilidadHoyCaja').style.display = 'none';
+        document.getElementById('abrirReportes').style.display = 'none';
+        document.getElementById('verInventario').style.display = 'none';
+        document.getElementById('agregarProducto').style.display = 'none';
+document.getElementById('consultarReporte').style.display = 'none';
+    }
+}
+window.addEventListener('DOMContentLoaded', () => {
+cargarSesion();
+cargarProductos();
+cargarDashboard();
+});
+ document.getElementById('cerrarSesion').addEventListener('click', async () => {
+
+    const tokenPestana = sessionStorage.getItem('tokenPestana');
+
+    const respuesta = await fetch('/logout', {
+        method: 'POST',
+        headers: {
+            'x-token-pestana': tokenPestana
+        }
+    });
+
+    if (respuesta.ok) {
+        sessionStorage.removeItem('tokenPestana');
+        window.location.href = '/login.html';
+    }
+
+});
+    </script>
+<script>
+
+function mostrarPantalla(nombre, boton) {
+
+    document
+        .querySelectorAll('.pantalla')
+        .forEach(pantalla => {
+            pantalla.classList.remove('activa');
+        });
+
+    const pantalla =
+        document.getElementById(
+            'pantalla' +
+            nombre.charAt(0).toUpperCase() +
+            nombre.slice(1)
+        );
+
+    if (pantalla) {
+        pantalla.classList.add('activa');
+    }
+
+    document
+        .querySelectorAll('.menu button')
+        .forEach(b => {
+            b.classList.remove('activo');
+        });
+
+    if (boton) {
+        boton.classList.add('activo');
+    }
+
+    const titulos = {
+
+        ventas: 'Nueva venta',
+        productos: 'Productos',
+        inventario: 'Inventario',
+        caja: 'Caja',
+        historial: 'Historial de ventas',
+        reportes: 'Reportes',
+        proveedores:'Proveedores',
+        usuarios: 'Usuarios',
+        dashboard: 'Resumen'
+
+    };
+
+    const titulo =
+        document.getElementById('tituloPantalla');
+
+    if (titulo) {
+        titulo.textContent =
+            titulos[nombre] || 'Punto de Venta';
+    }
+
+    if (nombre === 'historial' && typeof cargarHistorialProfesional === 'function') {
+        historialPagina = 1;
+        cargarHistorialProfesional();
+    }
+
+}
+if (
+    nombre === 'proveedores' &&
+    typeof cargarProveedores === 'function'
+) {
+    cargarProveedores();
+}
+document
+    .getElementById('navVentas')
+    ?.addEventListener('click', () => {
+
+        mostrarPantalla(
+            'ventas',
+            document.getElementById('navVentas')
+        );
+
+    });
+
+/* =========================
+   PRODUCTOS EN LA VENTA
+========================= */
+
+function mostrarProductosVenta(lista) {
+
+    const contenedor =
+        document.getElementById('productosVenta');
+
+    if (!contenedor) {
+        return;
+    }
+
+    if (!lista || lista.length === 0) {
+
+        contenedor.innerHTML =
+            '<p>No hay productos disponibles.</p>';
+
+        return;
+    }
+
+    contenedor.innerHTML =
+        lista.map(producto => `
+
+            <div class="producto-venta">
+
+                <div class="producto-venta-info">
+
+                    <strong>
+                        ${producto.nombre}
+                    </strong>
+
+                    <small>
+                        Código: ${producto.codigo}
+                        · Stock: ${producto.stock}
+                    </small>
+
+                </div>
+
+                <div>
+
+                    <span class="producto-venta-precio">
+                        $${Number(
+                            producto.precio_venta
+                        ).toFixed(2)}
+                    </span>
+
+                    <button
+                        class="btn btn-azul"
+                        onclick="agregarAlCarrito(${producto.id})"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+        `).join('');
+}
+
+
+/* =========================
+   BUSCADOR DE VENTA
+========================= */
+
+document
+    .getElementById('busquedaVenta')
+    ?.addEventListener('input', function () {
+
+        const texto =
+            this.value
+                .trim()
+                .toLowerCase();
+
+        const filtrados =
+            productos.filter(producto =>
+
+                String(producto.nombre)
+                    .toLowerCase()
+                    .includes(texto)
+
+                ||
+
+                String(producto.codigo)
+                    .toLowerCase()
+                    .includes(texto)
+
+            );
+
+        mostrarProductosVenta(filtrados);
+
+    });
+
+
+/* =========================
+   CARGAR PRODUCTOS EN VENTA
+========================= */
+
+const cargarProductosOriginal =
+    cargarProductos;
+
+cargarProductos = async function () {
+
+    await cargarProductosOriginal();
+
+    mostrarProductosVenta(productos);
+
+};
+
+
+/* =========================
+   CANCELAR USUARIO
+========================= */
+
+document
+    .getElementById('cancelarUsuario')
+    ?.addEventListener('click', () => {
+
+        document
+            .getElementById('formularioUsuario')
+            .style.display = 'none';
+
+    });
+
+
+/* =========================
+   OCULTAR MENÚ SEGÚN ROL
+========================= */
+
+async function configurarMenuPOS() {
+
+    const token =
+        sessionStorage.getItem(
+            'tokenPestana'
+        );
+
+    try {
+
+        const respuesta =
+            await fetch('/sesion', {
+                headers: {
+                    'x-token-pestana': token
+                }
+            });
+
+        if (!respuesta.ok) {
+            return;
+        }
+
+        const datos =
+            await respuesta.json();
+
+
+        /* EMPLEADO */
+
+        if (datos.rol === 'Empleado') {
+
+            document
+                .getElementById('navProductos')
+                .style.display = 'none';
+
+            document
+                .getElementById('navReportes')
+                .style.display = 'none';
+
+            document
+                .getElementById('navUsuarios')
+                .style.display = 'none';
+
+        }
+
+
+        /* ADMIN SECUNDARIO */
+
+        if (
+            datos.rol === 'Admin' &&
+            datos.admin_principal !== true
+        ) {
+
+            document
+                .getElementById('navReportes')
+                .style.display = 'none';
+
+            document
+                .getElementById('navUsuarios')
+                .style.display = 'none';
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            'No se pudo configurar el menú:',
+            error
+        );
+
+    }
+
+}
+
+
+window.addEventListener(
+    'DOMContentLoaded',
+    () => {
+
+        configurarMenuPOS();
+
+        setTimeout(() => {
+
+            mostrarProductosVenta(
+                productos
+            );
+
+        }, 500);
+
+    }
+);
+// ================================
+// CAJA PROFESIONAL - FRONTEND
+// ================================
+
+async function cargarCaja() {
+
+    try {
+
+        const respuesta = await fetch('/caja/abierta', {
+            headers: {
+                'x-token-pestana':
+                    sessionStorage.getItem('tokenPestana')
+            }
+        });
+
+        const datos = await respuesta.json();
+
+        if (!respuesta.ok) {
+            throw new Error(
+                datos.error || 'No se pudo consultar la caja'
+            );
+        }
+
+        const estadoCaja =
+            document.getElementById('estadoCaja');
+
+        const panelAbrir =
+            document.getElementById('panelAbrirCaja');
+
+        const panelAbierta =
+            document.getElementById('panelCajaAbierta');
+
+        const panelCerrar =
+            document.getElementById('panelCerrarCaja');
+
+        if (!datos.abierta) {
+
+            estadoCaja.innerHTML = `
+                <p>
+                    <strong>
+                        No hay una caja abierta.
+                    </strong>
+                </p>
+            `;
+
+            panelAbrir.style.display = 'block';
+            panelAbierta.style.display = 'none';
+            panelCerrar.style.display = 'none';
+
+            return;
+        }
+
+        const caja = datos.caja;
+        const ventas = datos.ventas;
+
+        estadoCaja.innerHTML = `
+            <p>
+                <strong>Caja abierta</strong>
+                desde
+                ${new Date(
+                    caja.fecha_apertura
+                ).toLocaleString()}
+            </p>
+        `;
+
+        panelAbrir.style.display = 'none';
+        panelAbierta.style.display = 'block';
+        panelCerrar.style.display = 'none';
+
+        document.getElementById(
+            'cajaFondoInicial'
+        ).textContent =
+            '$' +
+            Number(
+                caja.fondo_inicial
+            ).toFixed(2);
+
+        document.getElementById(
+            'cajaVentasEfectivo'
+        ).textContent =
+            '$' +
+            Number(
+                ventas.efectivo
+            ).toFixed(2);
+
+        document.getElementById(
+            'cajaEfectivoEsperado'
+        ).textContent =
+            '$' +
+            Number(
+                datos.efectivo_esperado
+            ).toFixed(2);
+
+        document.getElementById(
+            'cajaTotalVendido'
+        ).textContent =
+            '$' +
+            Number(
+                ventas.total_vendido
+            ).toFixed(2);
+
+        document.getElementById(
+            'detalleEfectivo'
+        ).textContent =
+            '$' +
+            Number(
+                ventas.efectivo
+            ).toFixed(2);
+
+        document.getElementById(
+            'detalleTarjeta'
+        ).textContent =
+            '$' +
+            Number(
+                ventas.tarjeta
+            ).toFixed(2);
+
+        document.getElementById(
+            'detalleTransferencia'
+        ).textContent =
+            '$' +
+            Number(
+                ventas.transferencia
+            ).toFixed(2);
+
+        document.getElementById(
+            'detalleNumeroVentas'
+        ).textContent =
+            ventas.numero_ventas;
+
+    } catch (error) {
+
+        console.error(
+            'ERROR AL CARGAR CAJA:',
+            error
+        );
+
+        document.getElementById(
+            'estadoCaja'
+        ).innerHTML = `
+            <p>
+                No se pudo cargar el estado de caja.
+            </p>
+        `;
+
+    }
+
+}
+
+
+// ================================
+// ABRIR CAJA
+// ================================
+
+document
+    .getElementById('abrirCaja')
+    ?.addEventListener('click', async () => {
+
+        const fondo =
+            Number(
+                document.getElementById(
+                    'fondoInicial'
+                ).value
+            );
+
+        if (isNaN(fondo) || fondo < 0) {
+
+            alert(
+                'Ingresa un fondo inicial válido.'
+            );
+
+            return;
+        }
+
+        try {
+
+            const respuesta = await fetch(
+                '/caja/abrir',
+                {
+                    method: 'POST',
+
+                    headers: {
+                        'Content-Type':
+                            'application/json',
+
+                        'x-token-pestana':
+                            sessionStorage.getItem(
+                                'tokenPestana'
+                            )
+                    },
+
+                    body: JSON.stringify({
+                        fondo_inicial: fondo
+                    })
+                }
+            );
+
+            const datos =
+                await respuesta.json();
+
+            if (!respuesta.ok) {
+
+                alert(
+                    datos.error ||
+                    'No se pudo abrir la caja'
+                );
+
+                return;
+            }
+
+            alert(
+                'Caja abierta correctamente.'
+            );
+
+            document.getElementById(
+                'fondoInicial'
+            ).value = '';
+
+            await cargarCaja();
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                'No se pudo abrir la caja.'
+            );
+
+        }
+
+    });
+
+
+// ================================
+// ACTUALIZAR CAJA
+// ================================
+
+document
+    .getElementById('actualizarCaja')
+    ?.addEventListener('click', () => {
+
+        cargarCaja();
+
+    });
+
+
+// ================================
+// MOSTRAR CIERRE
+// ================================
+
+document
+    .getElementById('cerrarCaja')
+    ?.addEventListener('click', () => {
+
+        document.getElementById(
+            'panelCerrarCaja'
+        ).style.display = 'block';
+
+        document.getElementById(
+            'efectivoContado'
+        ).value = '';
+
+        document.getElementById(
+            'resultadoDiferencia'
+        ).innerHTML =
+            'Ingresa el efectivo contado para calcular la diferencia.';
+
+    });
+
+
+// ================================
+// CALCULAR DIFERENCIA
+// ================================
+
+document
+    .getElementById('efectivoContado')
+    ?.addEventListener('input', async function () {
+
+        const contado =
+            Number(this.value);
+
+        if (isNaN(contado)) {
+            return;
+        }
+
+        try {
+
+            const respuesta = await fetch(
+                '/caja/abierta',
+                {
+                    headers: {
+                        'x-token-pestana':
+                            sessionStorage.getItem(
+                                'tokenPestana'
+                            )
+                    }
+                }
+            );
+
+            const datos =
+                await respuesta.json();
+
+            if (!respuesta.ok || !datos.abierta) {
+                return;
+            }
+
+            const esperado =
+                Number(
+                    datos.efectivo_esperado
+                );
+
+            const diferencia =
+                contado - esperado;
+
+            let texto;
+
+            if (diferencia > 0) {
+
+                texto =
+                    `Sobrante: $${diferencia.toFixed(2)}`;
+
+            } else if (diferencia < 0) {
+
+                texto =
+                    `Faltante: $${Math.abs(
+                        diferencia
+                    ).toFixed(2)}`;
+
+            } else {
+
+                texto =
+                    'Caja cuadrada: $0.00 de diferencia.';
+
+            }
+
+            document.getElementById(
+                'resultadoDiferencia'
+            ).innerHTML = `
+                <strong>
+                    Efectivo esperado:
+                    $${esperado.toFixed(2)}
+                </strong>
+
+                <br><br>
+
+                ${texto}
+            `;
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+
+    });
+
+
+// ================================
+// CANCELAR CIERRE
+// ================================
+
+document
+    .getElementById('cancelarCierreCaja')
+    ?.addEventListener('click', () => {
+
+        document.getElementById(
+            'panelCerrarCaja'
+        ).style.display = 'none';
+
+    });
+
+
+// ================================
+// CONFIRMAR CIERRE
+// ================================
+
+document
+    .getElementById('confirmarCierreCaja')
+    ?.addEventListener('click', async () => {
+
+        const contado =
+            Number(
+                document.getElementById(
+                    'efectivoContado'
+                ).value
+            );
+
+        if (isNaN(contado) || contado < 0) {
+
+            alert(
+                'Ingresa el efectivo contado.'
+            );
+
+            return;
+        }
+
+        const confirmar =
+            confirm(
+                '¿Confirmas el cierre de caja? Esta acción no se puede deshacer.'
+            );
+
+        if (!confirmar) {
+            return;
+        }
+
+        try {
+
+            const respuesta = await fetch(
+                '/caja/cerrar',
+                {
+                    method: 'POST',
+
+                    headers: {
+                        'Content-Type':
+                            'application/json',
+
+                        'x-token-pestana':
+                            sessionStorage.getItem(
+                                'tokenPestana'
+                            )
+                    },
+
+                    body: JSON.stringify({
+                        efectivo_contado: contado
+                    })
+                }
+            );
+
+            const datos =
+                await respuesta.json();
+
+            if (!respuesta.ok) {
+
+                alert(
+                    datos.error ||
+                    'No se pudo cerrar la caja'
+                );
+
+                return;
+            }
+
+            alert(
+                'Caja cerrada correctamente.'
+            );
+
+            document.getElementById(
+                'panelCerrarCaja'
+            ).style.display = 'none';
+
+            await cargarCaja();
+            await cargarHistorialCaja();
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                'No se pudo cerrar la caja.'
+            );
+
+        }
+
+    });
+
+
+// ================================
+// HISTORIAL DE CORTES
+// ================================
+
+async function cargarHistorialCaja() {
+
+    try {
+
+        const respuesta = await fetch(
+            '/caja/historial',
+            {
+                headers: {
+                    'x-token-pestana':
+                        sessionStorage.getItem(
+                            'tokenPestana'
+                        )
+                }
+            }
+        );
+
+        const datos =
+            await respuesta.json();
+
+        if (!respuesta.ok) {
+
+            throw new Error(
+                datos.error ||
+                'No se pudo obtener el historial'
+            );
+
+        }
+
+        const contenedor =
+            document.getElementById(
+                'historialCaja'
+            );
+
+        if (datos.length === 0) {
+
+            contenedor.innerHTML =
+                '<p>No hay cortes cerrados.</p>';
+
+            return;
+        }
+
+        contenedor.innerHTML = `
+            <div class="tabla-contenedor">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Corte</th>
+                            <th>Apertura</th>
+                            <th>Cierre</th>
+                            <th>Fondo inicial</th>
+                            <th>Vendido</th>
+                            <th>Esperado</th>
+                            <th>Contado</th>
+                            <th>Diferencia</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        ${datos.map(corte => `
+
+                            <tr>
+
+                                <td>
+                                    #${corte.id}
+                                </td>
+
+                                <td>
+                                    ${new Date(
+                                        corte.fecha_apertura
+                                    ).toLocaleString()}
+                                </td>
+
+                                <td>
+                                    ${corte.fecha_cierre
+                                        ? new Date(
+                                            corte.fecha_cierre
+                                        ).toLocaleString()
+                                        : '-'}
+                                </td>
+
+                                <td>
+                                    $${Number(
+                                        corte.fondo_inicial
+                                    ).toFixed(2)}
+                                </td>
+
+                                <td>
+                                    $${Number(
+                                        corte.total_vendido
+                                    ).toFixed(2)}
+                                </td>
+
+                                <td>
+                                    $${Number(
+                                        corte.efectivo_esperado
+                                    ).toFixed(2)}
+                                </td>
+
+                                <td>
+                                    $${Number(
+                                        corte.efectivo_contado
+                                    ).toFixed(2)}
+                                </td>
+
+                                <td>
+                                    $${Number(
+                                        corte.diferencia
+                                    ).toFixed(2)}
+                                </td>
+
+                            </tr>
+
+                        `).join('')}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        `;
+
+    } catch (error) {
+
+        console.error(
+            'ERROR HISTORIAL CAJA:',
+            error
+        );
+
+    }
+
+}
+
+
+// ================================
+// CARGAR CAJA AL ENTRAR
+// ================================
+
+document
+    .getElementById('navCaja')
+    ?.addEventListener('click', () => {
+
+        cargarCaja();
+        cargarHistorialCaja();
+
+    });
+
+
+// CARGA INICIAL
+
+window.addEventListener(
+    'DOMContentLoaded',
+    () => {
+
+        cargarCaja();
+        cargarHistorialCaja();
+
+    }
+);
+ // ========================================
+// COBRO RÁPIDO
+// ========================================
+
+const botonCobrar =
+    document.getElementById('cobrar');
+
+const ventanaCobro =
+    document.getElementById('ventanaCobro');
+
+const cancelarCobro =
+    document.getElementById('cancelarCobro');
+
+const confirmarCobro =
+    document.getElementById('confirmarCobro');
+
+const metodoPago =
+    document.getElementById('metodoPago');
+
+const pagoRecibido =
+    document.getElementById('pagoRecibido');
+
+const totalCobro =
+    document.getElementById('totalCobro');
+const ventanaTicket =
+    document.getElementById('ventanaTicket');
+
+const ticketContenido =
+    document.getElementById('ticketContenido');
+
+const imprimirTicket =
+    document.getElementById('imprimirTicket');
+
+const cerrarTicket =
+    document.getElementById('cerrarTicket');
+function mostrarProductosVenta(lista) {
+    const contenedor =
+        document.getElementById('productosVenta');
+
+    if (!contenedor) return;
+
+    if (!lista || lista.length === 0) {
+        contenedor.innerHTML =
+            '<p>No hay productos disponibles.</p>';
+        return;
+    }
+
+    contenedor.innerHTML =
+        lista.map(producto => `
+            <div class="producto-venta">
+                <div class="producto-venta-info">
+                    <strong>${producto.nombre}</strong>
+                    <small>
+                        Código: ${producto.codigo}
+                        · Stock: ${producto.stock}
+                    </small>
+                </div>
+
+                <div>
+                    <span class="producto-venta-precio">
+                        $${Number(producto.precio_venta).toFixed(2)}
+                    </span>
+
+                    <button
+                        class="btn btn-azul"
+                        onclick="agregarAlCarrito(${producto.id})"
+                    >
+                        +
+                    </button>
+                </div>
+            </div>
+        `).join('');
+}
+
+cerrarTicket.addEventListener(
+    'click',
+    () => {
+
+        ventanaTicket.style.display = 'none';
+
+    }
+);
+
+
+imprimirTicket.addEventListener(
+    'click',
+    () => {
+
+        const contenido =
+            document.getElementById(
+                'ticketImpresion'
+            ).innerHTML;
+
+        const ventana =
+            window.open(
+                '',
+                '',
+                'width=400,height=700'
+            );
+
+        ventana.document.write(`
+            <html>
+                <head>
+                    <title>Ticket</title>
+
+                    <style>
+                        @page {
+                            margin: 5mm;
+                        }
+
+                        body {
+                            margin:0;
+                            font-family:Arial,sans-serif;
+                            font-size:12px;
+                        }
+
+                        hr {
+                            border:0;
+                            border-top:1px dashed #000;
+                        }
+                    </style>
+                </head>
+
+                <body>
+                    ${contenido}
+                </body>
+            </html>
+        `);
+
+        ventana.document.close();
+
+        ventana.focus();
+
+        ventana.print();
+
+        ventana.close();
+
+    }
+);
+
+// ========================================
+// OBTENER TOTAL
+// ========================================
+
+function obtenerTotalCarrito() {
+
+    return carrito.reduce(
+        (total, producto) => {
+
+            return total +
+                Number(producto.precio) *
+                Number(producto.cantidad);
+
+        },
+        0
+    );
+
+}
+
+
+// ========================================
+// ABRIR COBRO
+// ========================================
+if (botonCobrar) {
+
+    botonCobrar.addEventListener(
+        'click',
+        async () => {
+
+            try {
+
+                const respuesta =
+                    await fetch('/caja/abierta', {
+                        headers: {
+                            'x-token-pestana':
+                                sessionStorage.getItem(
+                                    'tokenPestana'
+                                )
+                        }
+                    });
+
+                const caja =
+                    await respuesta.json();
+
+                if (!caja.abierta) {
+
+                    alert(
+                        'No se puede realizar la venta: la caja está cerrada'
+                    );
+
+                    return;
+                }
+
+                if (
+                    !carrito ||
+                    carrito.length === 0
+                ) {
+
+                    alert(
+                        'El carrito está vacío.'
+                    );
+
+                    return;
+                }
+
+                const total =
+                    obtenerTotalCarrito();
+
+                totalCobro.innerHTML =
+                    `Total: $${total.toFixed(2)}`;
+
+                metodoPago.value = '1';
+
+                pagoRecibido.value = '';
+
+                pagoRecibido.disabled = false;
+
+                ventanaCobro.classList.add(
+                    'activa'
+                );
+
+                setTimeout(() => {
+
+                    pagoRecibido.focus();
+
+                }, 50);
+
+            } catch (error) {
+
+                console.error(
+                    'ERROR AL CONSULTAR CAJA:',
+                    error
+                );
+
+                alert(
+                    'No se pudo comprobar el estado de la caja'
+                );
+
+            }
+
+        }
+    );
+
+}
+// ========================================
+// CAMBIO AUTOMÁTICO
+// ========================================
+
+if (pagoRecibido) {
+
+    pagoRecibido.addEventListener(
+        'input',
+        () => {
+
+            if (
+                metodoPago.value !== '1'
+            ) {
+                return;
+            }
+
+            const total =
+                obtenerTotalCarrito();
+
+            const recibido =
+                Number(
+                    pagoRecibido.value
+                );
+
+            if (
+                isNaN(recibido)
+            ) {
+                return;
+            }
+
+            const cambio =
+                recibido - total;
+
+            if (cambio >= 0) {
+
+                totalCobro.innerHTML = `
+                    Total: $${total.toFixed(2)}
+                    <br><br>
+                    <strong>
+                        Cambio: $${cambio.toFixed(2)}
+                    </strong>
+                `;
+
+            } else {
+
+                totalCobro.innerHTML = `
+                    Total: $${total.toFixed(2)}
+                    <br><br>
+                    <strong>
+                        Faltan: $${Math.abs(cambio).toFixed(2)}
+                    </strong>
+                `;
+
+            }
+
+        }
+    );
+
+}
+
+
+// ========================================
+// MÉTODO DE PAGO
+// ========================================
+
+if (metodoPago) {
+
+    metodoPago.addEventListener(
+        'change',
+        () => {
+
+            const total =
+                obtenerTotalCarrito();
+
+            totalCobro.innerHTML =
+                `Total: $${total.toFixed(2)}`;
+
+            if (
+                metodoPago.value === '1'
+            ) {
+
+                pagoRecibido.disabled =
+                    false;
+
+                pagoRecibido.focus();
+
+            } else {
+
+                pagoRecibido.value =
+                    '';
+
+                pagoRecibido.disabled =
+                    true;
+
+            }
+
+        }
+    );
+
+}
+
+
+// ========================================
+// CANCELAR
+// ========================================
+
+if (cancelarCobro) {
+
+    cancelarCobro.addEventListener(
+        'click',
+        () => {
+
+            ventanaCobro.classList.remove(
+                'activa'
+            );
+
+            pagoRecibido.value = '';
+
+        }
+    );
+
+}
+
+
+// ========================================
+// CONFIRMAR VENTA
+// ========================================
+function imprimirTicketAutomatico(
+    carritoTicket,
+    total,
+    metodo,
+    recibido,
+    cambio
+) {
+    const ahora = new Date();
+
+    const fecha = ahora.toLocaleDateString('es-MX');
+
+    const hora = ahora.toLocaleTimeString(
+        'es-MX',
+        {
+            hour: '2-digit',
+            minute: '2-digit'
+        }
+    );
+
+    const nombresMetodo = {
+        '1': 'Efectivo',
+        '2': 'Tarjeta',
+        '3': 'Transferencia'
+    };
+
+    let productosHTML = '';
+
+    carritoTicket.forEach(producto => {
+
+        const subtotal =
+            Number(producto.precio) *
+            Number(producto.cantidad);
+
+        productosHTML += `
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                margin:8px 0;
+            ">
+                <div>
+                    <strong>${producto.nombre}</strong>
+                    <br>
+                    ${producto.cantidad}
+                    x
+                    $${Number(producto.precio).toFixed(2)}
+                </div>
+
+                <strong>
+                    $${subtotal.toFixed(2)}
+                </strong>
+            </div>
+        `;
+    });
+
+    let pagoHTML = `
+        <p>
+            Método de pago:
+            <strong>
+                ${nombresMetodo[metodo] || 'Desconocido'}
+            </strong>
+        </p>
+    `;
+
+    if (metodo === '1') {
+        pagoHTML += `
+            <p>
+                Efectivo:
+                $${Number(recibido).toFixed(2)}
+            </p>
+
+            <p>
+                Cambio:
+                $${Number(cambio).toFixed(2)}
+            </p>
+        `;
+    }
+
+    const ventana = window.open(
+        '',
+        '_blank',
+        'width=400,height=700'
+    );
+
+    if (!ventana) {
+        alert(
+            'El navegador bloqueó la ventana de impresión. Permite las ventanas emergentes para este sitio.'
+        );
+        return null;
+    }
+
+    ventana.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Ticket</title>
+
+            <style>
+                @page {
+                    margin: 5mm;
+                }
+
+                html,
+                body {
+                    margin: 0;
+                    padding: 0;
+                    background: white;
+                }
+
+                body {
+                    font-family: Arial, sans-serif;
+                    font-size: 12px;
+                    color: #111;
+                    width: 100%;
+                }
+
+                .ticket {
+                    width: 100%;
+                }
+
+                .centrado {
+                    text-align: center;
+                }
+
+                hr {
+                    border: 0;
+                    border-top: 1px dashed #000;
+                    margin: 10px 0;
+                }
+
+                .total {
+                    display: flex;
+                    justify-content: space-between;
+                    font-size: 18px;
+                    font-weight: bold;
+                }
+
+                .gracias {
+                    text-align: center;
+                    margin-top: 15px;
+                    font-weight: bold;
+                }
+            </style>
+        </head>
+
+        <body>
+
+            <div class="ticket">
+
+                <div class="centrado">
+                    <h2 style="margin:0;">
+                        PUNTO DE VENTA
+                    </h2>
+
+                    <p style="margin:5px 0;">
+                        Refaccionaria
+                    </p>
+
+                    <p style="margin:5px 0;">
+                        ${fecha} ${hora}
+                    </p>
+                </div>
+
+                <hr>
+
+                ${productosHTML}
+
+                <hr>
+
+                <div class="total">
+                    <span>TOTAL</span>
+                    <span>
+                        $${Number(total).toFixed(2)}
+                    </span>
+                </div>
+
+                <br>
+
+                ${pagoHTML}
+
+                <hr>
+
+                <div class="gracias">
+                    ¡Gracias por su compra!
+                </div>
+
+            </div>
+
+        </body>
+        </html>
+    `);
+
+    ventana.document.close();
+
+    return ventana;
+}
+ let procesandoCobro = false;
+
+if (confirmarCobro) {
+
+    confirmarCobro.addEventListener(
+        'click',
+        async () => {
+            let ventanaImpresion = null;
+
+            if (procesandoCobro) {
+                return;
+            }
+
+            if (!carrito || carrito.length === 0) {
+                alert('El carrito está vacío.');
+                return;
+            }
+
+            const total =
+                obtenerTotalCarrito();
+
+            const metodo =
+                metodoPago.value;
+
+            const recibido =
+                Number(pagoRecibido.value);
+
+            // Validar efectivo ANTES de bloquear el cobro
+            if (
+                metodo === '1' &&
+                (
+                    isNaN(recibido) ||
+                    recibido < total
+                )
+            ) {
+                alert(
+                    'El monto recibido no cubre el total.'
+                );
+                return;
+            }
+ventanaImpresion = imprimirTicketAutomatico(
+    carrito.map(producto => ({
+        ...producto
+    })),
+    total,
+    metodo,
+    recibido,
+    metodo === '1'
+        ? recibido - total
+        : 0
+);
+            // Desde aquí sí estamos procesando una venta
+            procesandoCobro = true;
+            confirmarCobro.disabled = true;
+
+            try {
+
+                const respuesta =
+                    await fetch(
+                        '/ventas',
+                        {
+                            method: 'POST',
+
+                            headers: {
+                                'Content-Type':
+                                    'application/json',
+
+                                'x-token-pestana':
+                                    sessionStorage.getItem(
+                                        'tokenPestana'
+                                    )
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    carrito:
+                                        carrito.map(
+                                            producto => ({
+                                                id:
+                                                    producto.id,
+                                                cantidad:
+                                                    producto.cantidad
+                                            })
+                                        ),
+
+                                    metodo_pago:
+                                        metodo,
+
+                                    efectivo_recibido:
+                                        metodo === '1'
+                                            ? recibido
+                                            : null
+                                })
+                        }
+                    );
+
+                const datos =
+                    await respuesta.json();
+
+                if (!respuesta.ok) {
+
+                    alert(
+                        datos.error ||
+                        'No se pudo registrar la venta.'
+                    );
+
+                    return;
+                }
+
+                let mensaje =
+                    'Venta registrada correctamente.';
+
+                if (metodo === '1') {
+
+                    const cambio =
+                        recibido - total;
+
+                    mensaje +=
+                        `\nCambio: $${cambio.toFixed(2)}`;
+                }
+
+                 alert(mensaje);
+
+if (ventanaImpresion) {
+    ventanaImpresion.focus();
+    ventanaImpresion.print();
+
+    setTimeout(() => {
+        ventanaImpresion.close();
+    }, 1000);
+}
+
+// Vaciar carrito
+                carrito.length = 0;
+                mostrarCarrito();
+
+                // Cerrar ventana
+                ventanaCobro.classList.remove(
+                    'activa'
+                );
+
+                pagoRecibido.value = '';
+
+                // Actualizar productos y stock
+                await cargarProductos();
+
+                // Regresar al escáner
+                const escaner =
+                    document.getElementById(
+                        'codigoEscaner'
+                    );
+                
+
+            } catch (error) {
+
+                console.error(
+                    'ERROR AL REGISTRAR VENTA:',
+                    error
+                );
+
+                alert(
+                    'No se pudo registrar la venta.'
+                );
+
+            } finally {
+
+                // Liberar el botón para futuras ventas
+                procesandoCobro = false;
+                confirmarCobro.disabled = false;
+
+            }
+
+        }
+    );
+
+}
+
+// ========================================
+// ENTER = CONFIRMAR
+// ========================================
+
+if (pagoRecibido) {
+
+    pagoRecibido.addEventListener(
+        'keydown',
+        async evento => {
+
+            if (evento.key !== 'Enter') {
+                return;
+            }
+
+            evento.preventDefault();
+            evento.stopPropagation();
+            evento.stopImmediatePropagation();
+
+            if (!confirmarCobro) {
+                return;
+            }
+
+            if (confirmarCobro.disabled) {
+                return;
+            }
+
+            confirmarCobro.click();
+
+        }
+    );
+
+}
+
+// ========================================
+// F12 = COBRAR
+// ========================================
+
+document.addEventListener(
+    'keydown',
+    evento => {
+
+        if (
+            evento.key === 'F12'
+        ) {
+
+            evento.preventDefault();
+
+            if (botonCobrar) {
+
+                botonCobrar.click();
+
+            }
+
+        }
+
+    }
+);
+// ========================================
+// HISTORIAL PROFESIONAL
+// ========================================
+
+let historialPagina = 1;
+const historialLimite = 25;
+
+async function cargarHistorialProfesional() {
+
+    const tabla =
+        document.getElementById('historialTablaBody');
+
+    const estado =
+        document.getElementById('historialEstado');
+
+    if (!tabla) return;
+
+    tabla.innerHTML = '';
+
+    if (estado) {
+        estado.textContent =
+            'Cargando historial...';
+    }
+
+    try {
+
+        const parametros =
+            new URLSearchParams();
+
+        const busqueda =
+            document
+                .getElementById('historialBusqueda')
+                ?.value
+                .trim();
+
+        const desde =
+            document
+                .getElementById('historialDesde')
+                ?.value;
+
+        const hasta =
+            document
+                .getElementById('historialHasta')
+                ?.value;
+
+        const metodo =
+            document
+                .getElementById('historialMetodo')
+                ?.value;
+
+        if (busqueda)
+            parametros.set(
+                'busqueda',
+                busqueda
+            );
+
+        if (desde)
+            parametros.set(
+                'desde',
+                desde
+            );
+
+        if (hasta)
+            parametros.set(
+                'hasta',
+                hasta
+            );
+
+        if (metodo)
+            parametros.set(
+                'metodo',
+                metodo
+            );
+
+        parametros.set(
+            'pagina',
+            historialPagina
+        );
+
+        parametros.set(
+            'limite',
+            historialLimite
+        );
+
+        const respuesta =
+            await fetch(
+                `/historial-ventas?${parametros}`,
+                {
+                    headers: {
+                        'x-token-pestana':
+                            sessionStorage.getItem(
+                                'tokenPestana'
+                            )
+                    }
+                }
+            );
+
+        const datos =
+            await respuesta.json();
+
+        if (!respuesta.ok) {
+            throw new Error(
+                datos.error ||
+                'No se pudo cargar el historial'
+            );
+        }
+
+        const ventas =
+            datos.ventas || [];
+
+        if (!ventas.length) {
+
+            if (estado) {
+                estado.textContent =
+                    'No hay ventas con estos filtros.';
+            }
+
+        } else {
+
+            if (estado) {
+                estado.textContent = '';
+            }
+
+            ventas.forEach(venta => {
+
+                const fecha =
+                    new Date(venta.fecha);
+
+                const fila =
+                    document.createElement('tr');
+
+                fila.innerHTML = `
+                    <td>
+                        <strong>
+                            #${venta.id}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${fecha.toLocaleDateString(
+                            'es-MX'
+                        )}
+                    </td>
+
+                    <td>
+                        ${fecha.toLocaleTimeString(
+                            'es-MX',
+                            {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            }
+                        )}
+                    </td>
+
+                    <td>
+                        $${Number(
+                            venta.total
+                        ).toFixed(2)}
+                    </td>
+
+                    <td>
+                        ${venta.metodo_nombre}
+                    </td>
+
+                    <td>
+                        ${venta.unidades}
+                    </td>
+
+                    <td>
+                        <div class="historial-acciones">
+
+                            <button
+                                class="
+                                    btn-historial
+                                    btn-historial-detalle
+                                "
+                                onclick="
+                                    abrirDetalleHistorial(
+                                        ${venta.id}
+                                    )
+                                "
+                            >
+                                Ver
+                            </button>
+
+                            <button
+                                class="
+                                    btn-historial
+                                    btn-historial-ticket
+                                "
+                                onclick="
+                                    imprimirHistorial(
+                                        ${venta.id}
+                                    )
+                                "
+                            >
+                                Ticket
+                            </button>
+
+                        </div>
+                    </td>
+                `;
+
+                tabla.appendChild(fila);
+            });
+        }
+
+        mostrarPaginacionHistorial(
+            datos.paginacion
+        );
+
+        await cargarAnalisisHistorial();
+
+    } catch (error) {
+
+        console.error(
+            'ERROR HISTORIAL:',
+            error
+        );
+
+        if (estado) {
+            estado.textContent =
+                'Error al cargar el historial.';
+        }
+
+        alert(error.message);
+    }
+}
+
+
+// ========================================
+// PAGINACIÓN
+// ========================================
+
+function mostrarPaginacionHistorial(
+    datos
+) {
+
+    const contenedor =
+        document.getElementById(
+            'historialPaginacion'
+        );
+
+    if (!contenedor) return;
+
+    contenedor.innerHTML = '';
+
+    if (
+        !datos ||
+        datos.paginas <= 1
+    ) {
+        return;
+    }
+
+    const anterior =
+        document.createElement('button');
+
+    anterior.className =
+        'btn btn-azul';
+
+    anterior.textContent =
+        'Anterior';
+
+    anterior.disabled =
+        datos.pagina <= 1;
+
+    anterior.onclick = () => {
+
+        if (historialPagina <= 1)
+            return;
+
+        historialPagina--;
+
+        cargarHistorialProfesional();
+    };
+
+
+    const texto =
+        document.createElement('span');
+
+    texto.textContent =
+        `Página ${datos.pagina} de ${datos.paginas}`;
+
+
+    const siguiente =
+        document.createElement('button');
+
+    siguiente.className =
+        'btn btn-azul';
+
+    siguiente.textContent =
+        'Siguiente';
+
+    siguiente.disabled =
+        datos.pagina >= datos.paginas;
+
+    siguiente.onclick = () => {
+
+        if (
+            historialPagina >=
+            datos.paginas
+        ) {
+            return;
+        }
+
+        historialPagina++;
+
+        cargarHistorialProfesional();
+    };
+
+
+    contenedor.appendChild(anterior);
+    contenedor.appendChild(texto);
+    contenedor.appendChild(siguiente);
+}
+
+
+// ========================================
+// ANÁLISIS
+// ========================================
+
+async function cargarAnalisisHistorial() {
+
+    try {
+
+        const parametros =
+            new URLSearchParams();
+
+        const busqueda =
+            document
+                .getElementById(
+                    'historialBusqueda'
+                )
+                ?.value
+                .trim();
+
+        const desde =
+            document
+                .getElementById(
+                    'historialDesde'
+                )
+                ?.value;
+
+        const hasta =
+            document
+                .getElementById(
+                    'historialHasta'
+                )
+                ?.value;
+
+        const metodo =
+            document
+                .getElementById(
+                    'historialMetodo'
+                )
+                ?.value;
+
+        if (busqueda)
+            parametros.set(
+                'busqueda',
+                busqueda
+            );
+
+        if (desde)
+            parametros.set(
+                'desde',
+                desde
+            );
+
+        if (hasta)
+            parametros.set(
+                'hasta',
+                hasta
+            );
+
+        if (metodo)
+            parametros.set(
+                'metodo',
+                metodo
+            );
+
+        const respuesta =
+            await fetch(
+                `/historial-ventas/analisis?${parametros}`,
+                {
+                    headers: {
+                        'x-token-pestana':
+                            sessionStorage.getItem(
+                                'tokenPestana'
+                            )
+                    }
+                }
+            );
+
+        const datos =
+            await respuesta.json();
+
+        if (!respuesta.ok) {
+            throw new Error(
+                datos.error ||
+                'No se pudo cargar el análisis'
+            );
+        }
+
+        const resumen =
+            datos.resumen || {};
+
+        document.getElementById(
+            'histNumeroVentas'
+        ).textContent =
+            resumen.numero_ventas || 0;
+
+        document.getElementById(
+            'histTotalVendido'
+        ).textContent =
+            `$${Number(
+                resumen.total_vendido || 0
+            ).toFixed(2)}`;
+
+        document.getElementById(
+            'histUtilidad'
+        ).textContent =
+            `$${Number(
+                resumen.utilidad || 0
+            ).toFixed(2)}`;
+
+        document.getElementById(
+            'histTicketPromedio'
+        ).textContent =
+            `$${Number(
+                resumen.ticket_promedio || 0
+            ).toFixed(2)}`;
+
+        document.getElementById(
+            'histEfectivo'
+        ).textContent =
+            `$${Number(
+                resumen.efectivo || 0
+            ).toFixed(2)}`;
+
+        document.getElementById(
+            'histTarjeta'
+        ).textContent =
+            `$${Number(
+                resumen.tarjeta || 0
+            ).toFixed(2)}`;
+
+        document.getElementById(
+            'histTransferencia'
+        ).textContent =
+            `$${Number(
+                resumen.transferencia || 0
+            ).toFixed(2)}`;
+
+        document.getElementById(
+            'histUnidades'
+        ).textContent =
+            resumen.unidades || 0;
+
+        mostrarTopProductos(
+            datos.graficas?.productos_top || []
+        );
+
+        dibujarGraficasHistorial(
+            datos.graficas || {}
+        );
+
+    } catch (error) {
+
+        console.error(
+            'ERROR ANALISIS:',
+            error
+        );
+    }
+}
+
+
+// ========================================
+// TOP PRODUCTOS
+// ========================================
+
+function mostrarTopProductos(
+    productos
+) {
+
+    const contenedor =
+        document.getElementById(
+            'historialProductosTop'
+        );
+
+    if (!contenedor) return;
+
+    if (!productos.length) {
+
+        contenedor.innerHTML =
+            '<p>No hay productos vendidos.</p>';
+
+        return;
+    }
+
+    contenedor.innerHTML =
+        productos.map(
+            producto => `
+                <div
+                    class="historial-producto-top"
+                >
+
+                    <div
+                        class="historial-producto-info"
+                    >
+
+                        <strong>
+                            ${producto.nombre}
+                        </strong>
+
+                        <small>
+                            Código:
+                            ${producto.codigo}
+                        </small>
+
+                    </div>
+
+                    <div
+                        class="
+                            historial-producto-unidades
+                        "
+                    >
+                        ${producto.unidades}
+                        unidades
+                    </div>
+
+                </div>
+            `
+        ).join('');
+}
+
+
+// ========================================
+// FILTROS
+// ========================================
+
+document
+    .getElementById(
+        'btnBuscarHistorial'
+    )
+    ?.addEventListener(
+        'click',
+        () => {
+
+            historialPagina = 1;
+
+            cargarHistorialProfesional();
+        }
+    );
+
+
+document
+    .getElementById(
+        'btnLimpiarHistorial'
+    )
+    ?.addEventListener(
+        'click',
+        () => {
+
+            document.getElementById(
+                'historialBusqueda'
+            ).value = '';
+
+            document.getElementById(
+                'historialDesde'
+            ).value = '';
+
+            document.getElementById(
+                'historialHasta'
+            ).value = '';
+
+            document.getElementById(
+                'historialMetodo'
+            ).value = '';
+
+            historialPagina = 1;
+
+            cargarHistorialProfesional();
+        }
+    );
+
+
+// ========================================
+// ENTER EN BÚSQUEDA
+// ========================================
+
+document
+    .getElementById(
+        'historialBusqueda'
+    )
+    ?.addEventListener(
+        'keydown',
+        evento => {
+
+            if (
+                evento.key === 'Enter'
+            ) {
+
+                historialPagina = 1;
+
+                cargarHistorialProfesional();
+            }
+        }
+    );
+
+
+// ========================================
+// GRÁFICAS DEL HISTORIAL
+// ========================================
+
+const historialGraficas = {};
+
+function destruirGraficaHistorial(id) {
+    if (historialGraficas[id]) {
+        historialGraficas[id] = null;
+    }
+}
+
+function prepararCanvasHistorial(id) {
+    const canvas = document.getElementById(id);
+    if (!canvas) return null;
+
+    const contenedor = canvas.parentElement;
+    const ancho = Math.max(320, contenedor.clientWidth - 36);
+    const alto = 300;
+    const dpr = window.devicePixelRatio || 1;
+
+    canvas.width = ancho * dpr;
+    canvas.height = alto * dpr;
+    canvas.style.width = ancho + 'px';
+    canvas.style.height = alto + 'px';
+
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, ancho, alto);
+
+    return { canvas, ctx, ancho, alto };
+}
+
+function formatoDineroHistorial(valor) {
+    return '$' + Number(valor || 0).toLocaleString('es-MX', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+}
+
+function dibujarLineaHistorial(id, datos, campo, titulo) {
+    const c = prepararCanvasHistorial(id);
+    if (!c) return;
+    const { ctx, ancho, alto } = c;
+
+    if (!datos.length) {
+        ctx.fillStyle = '#6b7280';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Sin datos para este periodo.', ancho / 2, alto / 2);
+        return;
+    }
+
+    const margen = { top: 24, right: 20, bottom: 48, left: 68 };
+    const w = ancho - margen.left - margen.right;
+    const h = alto - margen.top - margen.bottom;
+    const valores = datos.map(d => Number(d[campo] || 0));
+    const max = Math.max(...valores, 1);
+    const pasos = 4;
+
+    ctx.strokeStyle = '#e5e7eb';
+    ctx.lineWidth = 1;
+    ctx.fillStyle = '#6b7280';
+    ctx.font = '11px Arial';
+    ctx.textAlign = 'right';
+
+    for (let i = 0; i <= pasos; i++) {
+        const y = margen.top + h - (h * i / pasos);
+        const valor = max * i / pasos;
+        ctx.beginPath();
+        ctx.moveTo(margen.left, y);
+        ctx.lineTo(ancho - margen.right, y);
+        ctx.stroke();
+        ctx.fillText(campo === 'ingresos' || campo === 'utilidad'
+            ? formatoDineroHistorial(valor)
+            : Math.round(valor).toString(), margen.left - 8, y + 4);
+    }
+
+    ctx.strokeStyle = '#2563eb';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+
+    datos.forEach((d, i) => {
+        const x = datos.length === 1
+            ? margen.left + w / 2
+            : margen.left + (w * i / (datos.length - 1));
+        const y = margen.top + h - (Number(d[campo] || 0) / max) * h;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    ctx.fillStyle = '#2563eb';
+    datos.forEach((d, i) => {
+        const x = datos.length === 1
+            ? margen.left + w / 2
+            : margen.left + (w * i / (datos.length - 1));
+        const y = margen.top + h - (Number(d[campo] || 0) / max) * h;
+        ctx.beginPath();
+        ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (datos.length <= 10 || i % Math.ceil(datos.length / 10) === 0) {
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '10px Arial';
+            ctx.textAlign = 'center';
+            const fecha = String(d.fecha).slice(0, 10);
+            ctx.fillText(fecha.slice(5), x, alto - 17);
+            ctx.fillStyle = '#2563eb';
+        }
+    });
+
+    ctx.fillStyle = '#111827';
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText(titulo, margen.left, 14);
+}
+
+function dibujarBarrasHistorial(id, datos) {
+    const c = prepararCanvasHistorial(id);
+    if (!c) return;
+    const { ctx, ancho, alto } = c;
+
+    if (!datos.length) {
+        ctx.fillStyle = '#6b7280';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Sin ventas por método de pago.', ancho / 2, alto / 2);
+        return;
+    }
+
+    const margen = { top: 28, right: 20, bottom: 54, left: 58 };
+    const w = ancho - margen.left - margen.right;
+    const h = alto - margen.top - margen.bottom;
+    const max = Math.max(...datos.map(d => Number(d.total || 0)), 1);
+    const anchoBarra = Math.min(100, w / datos.length * 0.55);
+
+    datos.forEach((d, i) => {
+        const valor = Number(d.total || 0);
+        const bh = (valor / max) * h;
+        const x = margen.left + (w / datos.length) * i + (w / datos.length - anchoBarra) / 2;
+        const y = margen.top + h - bh;
+
+        ctx.fillStyle = '#2563eb';
+        ctx.fillRect(x, y, anchoBarra, bh);
+
+        ctx.fillStyle = '#111827';
+        ctx.font = '11px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(formatoDineroHistorial(valor), x + anchoBarra / 2, Math.max(18, y - 7));
+        ctx.fillStyle = '#6b7280';
+        ctx.fillText(d.metodo, x + anchoBarra / 2, alto - 22);
+    });
+}
+
+function dibujarProductosTopHistorial(productos) {
+    const c = document.getElementById('historialProductosTop');
+    if (!c) return;
+
+    if (!productos.length) {
+        mostrarTopProductos([]);
+        return;
+    }
+
+    const max = Math.max(...productos.map(p => Number(p.unidades || 0)), 1);
+    c.innerHTML = productos.map(p => `
+        <div class="historial-producto-top">
+            <div class="historial-producto-info">
+                <strong>${p.nombre}</strong>
+                <small>Código: ${p.codigo} · ${p.unidades} unidades</small>
+            </div>
+            <div style="width:180px;max-width:40%;">
+                <div style="height:8px;background:#e5e7eb;border-radius:99px;overflow:hidden;">
+                    <div style="height:100%;width:${(Number(p.unidades || 0) / max) * 100}%;background:#2563eb;"></div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function dibujarGraficasHistorial(graficas) {
+    dibujarLineaHistorial(
+        'graficaVentasDia',
+        graficas?.ventas_por_dia || [],
+        'ingresos',
+        'Ingresos por día'
+    );
+
+    dibujarLineaHistorial(
+        'graficaUtilidadDia',
+        graficas?.utilidad_por_dia || [],
+        'utilidad',
+        'Utilidad por día'
+    );
+
+    dibujarBarrasHistorial(
+        'graficaMetodosPago',
+        graficas?.ventas_por_metodo || []
+    );
+
+    dibujarProductosTopHistorial(
+        graficas?.productos_top || []
+    );
+}
+
+// ========================================
+// DETALLE Y REIMPRESIÓN
+// ========================================
+
+async function abrirDetalleHistorial(id) {
+    const modal = document.getElementById('modalDetalleVenta');
+    const contenido = document.getElementById('detalleVentaContenido');
+    if (!modal || !contenido) return;
+
+    contenido.innerHTML = '<p>Cargando detalle...</p>';
+    modal.classList.add('activo');
+
+    try {
+        const respuesta = await fetch(`/historial-ventas/${id}`, {
+            headers: {
+                'x-token-pestana': sessionStorage.getItem('tokenPestana')
+            }
+        });
+        const datos = await respuesta.json();
+        if (!respuesta.ok) throw new Error(datos.error || 'No se pudo obtener el detalle');
+
+        const venta = datos.venta;
+        const fecha = new Date(venta.fecha);
+        const productos = datos.productos || [];
+
+        contenido.innerHTML = `
+            <div class="detalle-venta-header">
+                <h2>Venta #${venta.id}</h2>
+                <button class="btn btn-historial-ticket" onclick="imprimirHistorial(${venta.id})">
+                    Reimprimir ticket
+                </button>
+            </div>
+            <div class="detalle-venta-datos">
+                <div class="detalle-venta-dato"><span>Fecha</span><strong>${fecha.toLocaleDateString('es-MX')}</strong></div>
+                <div class="detalle-venta-dato"><span>Hora</span><strong>${fecha.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'})}</strong></div>
+                <div class="detalle-venta-dato"><span>Método</span><strong>${venta.metodo_nombre}</strong></div>
+                <div class="detalle-venta-dato"><span>Cajero</span><strong>${venta.usuario_nombre || '—'}</strong></div>
+                <div class="detalle-venta-dato"><span>Efectivo recibido</span><strong>${venta.efectivo_recibido == null ? '—' : formatoDineroHistorial(venta.efectivo_recibido)}</strong></div>
+                <div class="detalle-venta-dato"><span>Cambio</span><strong>${venta.cambio == null ? '—' : formatoDineroHistorial(venta.cambio)}</strong></div>
+                <div class="detalle-venta-dato"><span>Estado</span><strong>${venta.estado || 'COMPLETADA'}</strong></div>
+                <div class="detalle-venta-dato"><span>Unidades</span><strong>${venta.unidades}</strong></div>
+            </div>
+            <table class="detalle-venta-tabla">
+                <thead><tr><th>Código</th><th>Producto</th><th>Cantidad</th><th>Precio</th><th>Subtotal</th></tr></thead>
+                <tbody>
+                    ${productos.map(p => `
+                        <tr>
+                            <td>${p.codigo}</td>
+                            <td>${p.nombre}</td>
+                            <td>${p.cantidad}</td>
+                            <td>${formatoDineroHistorial(p.precio)}</td>
+                            <td>${formatoDineroHistorial(p.subtotal)}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+            <div class="detalle-venta-total">Total: ${formatoDineroHistorial(venta.total)}</div>
+        `;
+    } catch (error) {
+        contenido.innerHTML = `<p>${error.message}</p>`;
+    }
+}
+
+async function imprimirHistorial(id) {
+    try {
+        const respuesta = await fetch(`/historial-ventas/${id}`, {
+            headers: {
+                'x-token-pestana': sessionStorage.getItem('tokenPestana')
+            }
+        });
+        const datos = await respuesta.json();
+        if (!respuesta.ok) throw new Error(datos.error || 'No se pudo obtener el ticket');
+
+        const venta = datos.venta;
+        const fecha = new Date(venta.fecha);
+        const ventana = window.open('', '_blank', 'width=420,height=700');
+        if (!ventana) {
+            alert('El navegador bloqueó la ventana de impresión. Permite ventanas emergentes.');
+            return;
+        }
+
+        ventana.document.write(`
+            <!doctype html><html><head><meta charset="utf-8"><title>Ticket #${venta.id}</title>
+            <style>
+                body{font-family:Arial,sans-serif;width:280px;margin:0 auto;padding:12px;font-size:12px;color:#111}
+                h2{text-align:center;margin:0 0 8px;font-size:18px}
+                .centro{text-align:center}.linea{border-top:1px dashed #777;margin:8px 0}
+                table{width:100%;border-collapse:collapse}td{padding:3px 0;vertical-align:top}
+                .derecha{text-align:right}.total{font-size:18px;font-weight:bold}.pequeno{font-size:10px;color:#555}
+            </style></head><body>
+            <h2>PUNTO DE VENTA</h2>
+            <div class="centro">Venta #${venta.id}<br>${fecha.toLocaleString('es-MX')}</div>
+            <div class="linea"></div>
+            <table>
+                ${datos.productos.map(p => `<tr><td>${p.cantidad} × ${p.nombre}<br><span class="pequeno">${p.codigo}</span></td><td class="derecha">${formatoDineroHistorial(p.subtotal)}</td></tr>`).join('')}
+            </table>
+            <div class="linea"></div>
+            <table>
+                <tr><td>Método</td><td class="derecha">${venta.metodo_nombre}</td></tr>
+                ${venta.efectivo_recibido != null ? `<tr><td>Recibido</td><td class="derecha">${formatoDineroHistorial(venta.efectivo_recibido)}</td></tr>` : ''}
+                ${venta.cambio != null ? `<tr><td>Cambio</td><td class="derecha">${formatoDineroHistorial(venta.cambio)}</td></tr>` : ''}
+            </table>
+            <div class="linea"></div>
+            <div class="derecha total">TOTAL ${formatoDineroHistorial(venta.total)}</div>
+            <p class="centro pequeno">Gracias por su compra.</p>
+            </body></html>
+        `);
+        ventana.document.close();
+        ventana.focus();
+        ventana.print();
+        setTimeout(() => ventana.close(), 1000);
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+window.abrirDetalleHistorial = abrirDetalleHistorial;
+window.imprimirHistorial = imprimirHistorial;
+
+// Cierre del modal.
+document.getElementById('cerrarDetalleVenta')?.addEventListener('click', () => {
+    document.getElementById('modalDetalleVenta')?.classList.remove('activo');
+});
+document.getElementById('modalDetalleVenta')?.addEventListener('click', evento => {
+    if (evento.target.id === 'modalDetalleVenta') {
+        evento.currentTarget.classList.remove('activo');
+    }
+});
+
+// Redibuja al cambiar tamaño de ventana.
+window.addEventListener('resize', () => {
+    if (document.getElementById('pantallaHistorial')?.classList.contains('activa')) {
+        cargarAnalisisHistorial();
+    }
+});
+
+// ========================================
+// EXPONER PARA NAVEGACIÓN
+// ========================================
+
+window.cargarHistorialProfesional =
+    cargarHistorialProfesional;
+// ========================================
+// PROVEEDORES
+// ========================================
+
+const botonNuevoProveedor =
+    document.getElementById('nuevoProveedor');
+
+const formularioProveedor =
+    document.getElementById('formularioProveedor');
+
+const cancelarProveedor =
+    document.getElementById('cancelarProveedor');
+const guardarProveedor =
+    document.getElementById('guardarProveedor');
+let proveedorEditandoId = null;
+
+if (botonNuevoProveedor) {
+if (guardarProveedor) {
+
+    guardarProveedor.addEventListener(
+        'click',
+        async () => {
+
+            const nombre =
+                document.getElementById(
+                    'proveedorNombre'
+                ).value.trim();
+
+            const empresa =
+                document.getElementById(
+                    'proveedorEmpresa'
+                ).value.trim();
+
+            const telefono =
+                document.getElementById(
+                    'proveedorTelefono'
+                ).value.trim();
+
+            const correo =
+                document.getElementById(
+                    'proveedorCorreo'
+                ).value.trim();
+
+            const direccion =
+                document.getElementById(
+                    'proveedorDireccion'
+                ).value.trim();
+
+            const notas =
+                document.getElementById(
+                    'proveedorNotas'
+                ).value.trim();
+
+            if (!nombre) {
+
+                alert(
+                    'El nombre del proveedor es obligatorio'
+                );
+
+                return;
+            }
+
+            try {
+
+                const url =
+    proveedorEditandoId
+        ? `/proveedores/${proveedorEditandoId}`
+        : '/proveedores';
+
+const metodo =
+    proveedorEditandoId
+        ? 'PUT'
+        : 'POST';
+
+const respuesta =
+    await fetch(url, {
+
+                        method: metodo,
+
+                        headers: {
+                            'Content-Type':
+                                'application/json',
+
+                            'x-token-pestana':
+                                sessionStorage.getItem(
+                                    'tokenPestana'
+                                )
+                        },
+
+                        body: JSON.stringify({
+
+                            nombre,
+                            empresa,
+                            telefono,
+                            correo,
+                            direccion,
+                            notas
+
+                        })
+
+                    });
+
+                const datos =
+                    await respuesta.json();
+
+                if (!respuesta.ok) {
+
+                    throw new Error(
+                        datos.error ||
+                        'No se pudo registrar el proveedor'
+                    );
+
+                }
+
+                alert(
+    proveedorEditandoId
+        ? 'Proveedor actualizado correctamente'
+        : 'Proveedor registrado correctamente'
+);
+
+proveedorEditandoId = null;
+
+cargarProveedores();
+                cargarProveedores();
+                formularioProveedor.style.display =
+                    'none';
+
+                document.getElementById(
+                    'proveedorNombre'
+                ).value = '';
+
+                document.getElementById(
+                    'proveedorEmpresa'
+                ).value = '';
+
+                document.getElementById(
+                    'proveedorTelefono'
+                ).value = '';
+
+                document.getElementById(
+                    'proveedorCorreo'
+                ).value = '';
+
+                document.getElementById(
+                    'proveedorDireccion'
+                ).value = '';
+
+                document.getElementById(
+                    'proveedorNotas'
+                ).value = '';
+
+            } catch (error) {
+
+                console.error(
+                    'ERROR AL REGISTRAR PROVEEDOR:',
+                    error
+                );
+
+                alert(error.message);
+
+            }
+
+        }
+    );
+
+}
+async function cargarProveedores() {
+
+    try {
+
+        const respuesta =
+            await fetch('/proveedores', {
+                headers: {
+                    'x-token-pestana':
+                        sessionStorage.getItem(
+                            'tokenPestana'
+                        )
+                }
+            });
+
+        const proveedores =
+            await respuesta.json();
+console.log(
+    'PROVEEDORES RECIBIDOS:',
+    proveedores
+);
+        if (!respuesta.ok) {
+            throw new Error(
+                proveedores.error ||
+                'No se pudieron cargar los proveedores'
+            );
+        }
+
+        const lista =
+            document.getElementById(
+                'listaProveedores'
+            );
+
+        if (!proveedores.length) {
+
+            lista.innerHTML = `
+                <p>
+                    No hay proveedores registrados.
+                </p>
+            `;
+
+            return;
+        }
+
+        lista.innerHTML = '';
+
+proveedores.forEach(proveedor => {
+
+    const elemento =
+        document.createElement('div');
+
+    elemento.className = 'proveedor-item';
+
+    elemento.innerHTML = `
+
+        <strong>
+            ${proveedor.nombre}
+        </strong>
+
+        <br>
+
+        Empresa:
+        ${proveedor.empresa || 'Sin empresa'}
+
+        <br>
+
+        Teléfono:
+        ${proveedor.telefono || 'Sin teléfono'}
+
+        <br>
+
+        Correo:
+        ${proveedor.correo || 'Sin correo'}
+
+        <br><br>
+
+        <button
+            class="btn btn-azul"
+            onclick="editarProveedor(${proveedor.id})"
+        >
+            Editar
+        </button>
+
+        <button
+            class="btn btn-gris"
+            onclick="eliminarProveedor(${proveedor.id})"
+        >
+            Eliminar
+        </button>
+
+        <hr>
+
+    `;
+
+    lista.appendChild(elemento);
+
+});
+
+    } catch (error) {
+
+        console.error(
+            'ERROR AL CARGAR PROVEEDORES:',
+            error
+        );
+
+    }
+
+}
+async function eliminarProveedor(id) {
+
+    const confirmar =
+        confirm(
+            '¿Seguro que quieres eliminar este proveedor?'
+        );
+
+    if (!confirmar) {
+        return;
+    }
+
+    try {
+
+        const respuesta =
+            await fetch(
+                `/proveedores/${id}`,
+                {
+                    method: 'DELETE',
+
+                    headers: {
+                        'x-token-pestana':
+                            sessionStorage.getItem(
+                                'tokenPestana'
+                            )
+                    }
+                }
+            );
+
+        const datos =
+            await respuesta.json();
+
+        if (!respuesta.ok) {
+
+            throw new Error(
+                datos.error ||
+                'No se pudo eliminar el proveedor'
+            );
+
+        }
+
+        alert(
+            'Proveedor eliminado correctamente'
+        );
+
+        cargarProveedores();
+
+    } catch (error) {
+
+        console.error(
+            'ERROR AL ELIMINAR PROVEEDOR:',
+            error
+        );
+
+        alert(error.message);
+
+    }
+
+}
+async function obtenerProveedorPorId(id) {
+
+    try {
+
+        const respuesta =
+            await fetch('/proveedores', {
+                headers: {
+                    'x-token-pestana':
+                        sessionStorage.getItem(
+                            'tokenPestana'
+                        )
+                }
+            });
+
+        const proveedores =
+            await respuesta.json();
+
+        if (!respuesta.ok) {
+
+            throw new Error(
+                proveedores.error ||
+                'No se pudieron obtener los proveedores'
+            );
+
+        }
+
+        return proveedores.find(
+            proveedor =>
+                Number(proveedor.id) === Number(id)
+        );
+
+    } catch (error) {
+
+        console.error(
+            'ERROR AL OBTENER PROVEEDOR:',
+            error
+        );
+
+        alert(error.message);
+
+        return null;
+
+    }
+
+}
+async function editarProveedor(id) {
+
+ proveedorEditandoId = id;
+
+    const proveedor =
+        await obtenerProveedorPorId(id);
+
+    if (!proveedor) {
+        return;
+    }
+
+    document.getElementById(
+        'proveedorNombre'
+    ).value = proveedor.nombre || '';
+
+    document.getElementById(
+        'proveedorEmpresa'
+    ).value = proveedor.empresa || '';
+
+    document.getElementById(
+        'proveedorTelefono'
+    ).value = proveedor.telefono || '';
+
+    document.getElementById(
+        'proveedorCorreo'
+    ).value = proveedor.correo || '';
+
+    document.getElementById(
+        'proveedorDireccion'
+    ).value = proveedor.direccion || '';
+
+    document.getElementById(
+        'proveedorNotas'
+    ).value = proveedor.notas || '';
+
+    formularioProveedor.style.display =
+        'block';
+
+}
+    botonNuevoProveedor.addEventListener(
+        'click',
+        () => {
+
+            formularioProveedor.style.display =
+                'block';
+
+        }
+    );
+
+}
+
+if (cancelarProveedor) {
+
+    cancelarProveedor.addEventListener(
+        'click',
+        () => {
+
+            formularioProveedor.style.display =
+                'none';
+        }
+    );
+
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+    <style>
+    body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        width: 300px;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    #mensaje {
+        text-align: center;
+    }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de sesión</title>
+</head>
+
+<body>
+
+    <h1>Iniciar sesión</h1>
+
+    <form id="loginForm">
+
+        <label>Usuario:</label>
+        <input type="text" id="usuario" required>
+
+        <br><br>
+
+        <label>Contraseña:</label>
+        <input type="password" id="password" required>
+
+        <br><br>
+
+        <button type="submit">Entrar</button>
+
+    </form>
+
+    <p id="mensaje"></p>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (event) => {
+
+            event.preventDefault();
+ 
+            const usuario = document.getElementById('usuario').value;
+            const password = document.getElementById('password').value;
+
+            try {
+
+                const respuesta = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        usuario,
+                        password
+                    })
+                });
+
+                const datos = await respuesta.json();
+
+                if (!respuesta.ok) {
+    document.getElementById('mensaje').textContent = datos.error;
+    return;
+}
+
+sessionStorage.setItem('tokenPestana', datos.tokenPestana);
+
+window.location.href = '/';
+            } catch (error) {
+
+                console.error(error);
+
+                document.getElementById('mensaje').textContent =
+                    'No se pudo conectar con el servidor';
+
+            }
+
+        });
+    </script>
+
+</body>
+</html>
