@@ -440,6 +440,107 @@
 .historial-tabla td, .historial-tabla th { white-space:nowrap; }
 .historial-acciones { flex-wrap:wrap; }
 </style>
+
+    <style id="pos-experiencia-visual">
+        :root {
+            --pos-ink: #172033;
+            --pos-muted: #68758a;
+            --pos-line: #e4e9f1;
+            --pos-surface: #ffffff;
+            --pos-bg: #f3f6fb;
+            --pos-primary: #315ee8;
+            --pos-primary-dark: #2449c6;
+            --pos-radius: 16px;
+            --pos-shadow: 0 8px 24px rgba(22, 34, 57, .055);
+        }
+        html { scroll-behavior: smooth; }
+        body { background: var(--pos-bg) !important; color: var(--pos-ink); font-family: Inter, "Segoe UI", system-ui, -apple-system, sans-serif !important; letter-spacing: -.01em; }
+        .app { min-height: 100vh; }
+        .sidebar { width: 248px; padding: 22px 15px; background: linear-gradient(180deg, #172238 0%, #101827 100%); box-shadow: 8px 0 28px rgba(15, 23, 42, .07); }
+        .logo { padding: 10px 13px 28px; font-size: 17px; letter-spacing: .07em; line-height: 1.5; }
+        .logo::before { content: "PV"; display: inline-grid; place-items: center; width: 34px; height: 34px; margin-right: 10px; vertical-align: middle; border-radius: 11px; background: linear-gradient(135deg, #5e83ff, #315ee8); color: white; font-size: 13px; letter-spacing: 0; box-shadow: 0 5px 15px #315ee855; }
+        .logo small { margin-top: 7px; padding-left: 45px; font-size: 11px; letter-spacing: .02em; }
+        .menu { gap: 6px; }
+        .menu button { min-height: 43px; padding: 11px 13px; border-radius: 10px; color: #c3ccdc; font-size: 13px; font-weight: 550; transition: background .18s ease, color .18s ease, transform .18s ease; }
+        .menu button:hover { background: #ffffff12; color: #fff; transform: translateX(2px); }
+        .menu button.activo { background: linear-gradient(100deg, #315ee8, #4776ff); color: #fff; box-shadow: 0 7px 16px #315ee83b; }
+        .menu-separador { background: #ffffff18; margin: 13px 5px; }
+        .cerrar .btn { border-radius: 10px !important; background: #ffffff10 !important; color: #e6eaf2 !important; border: 1px solid #ffffff1c !important; }
+        .cerrar .btn:hover { background: #9f2f3d !important; }
+        .contenido { padding: 30px clamp(18px, 3vw, 42px); overflow-x: hidden; }
+        .contenido::before { content: none; }
+        .encabezado { margin-bottom: 26px; gap: 16px; }
+        .encabezado h1 { font-size: clamp(24px, 2.1vw, 31px); font-weight: 750; letter-spacing: -.045em; }
+        .usuario-barra { border: 1px solid var(--pos-line); border-radius: 999px; padding: 10px 15px; color: #536179; background: #fff; box-shadow: 0 3px 10px #17203308; }
+        .panel, .tarjeta, #dashboard > div { border: 1px solid var(--pos-line); border-radius: var(--pos-radius); background: var(--pos-surface); box-shadow: var(--pos-shadow); }
+        .panel { padding: clamp(17px, 2vw, 25px); margin-bottom: 20px; }
+        .panel h2, .panel h3 { color: #1b2940; font-weight: 730; letter-spacing: -.025em; }
+        .panel h2 { font-size: 21px; }
+        .panel h3 { font-size: 16px; }
+        .tarjetas { gap: 16px; }
+        .tarjeta { padding: 20px; transition: transform .18s ease, box-shadow .18s ease; }
+        .tarjeta:hover { transform: translateY(-2px); box-shadow: 0 12px 28px #1720330d; }
+        .tarjeta-titulo { color: var(--pos-muted); font-weight: 550; }
+        .tarjeta-valor { color: #1a2b49; font-size: 27px; letter-spacing: -.04em; }
+        input:not([type="checkbox"]):not([type="radio"]), select, textarea { min-height: 42px; border: 1px solid #dce3ed; border-radius: 10px; background-color: #fff; color: #1f2b40; padding: 10px 12px; font: inherit; font-size: 13px; transition: border-color .16s ease, box-shadow .16s ease, background .16s ease; }
+        input::placeholder, textarea::placeholder { color: #9aa5b6; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #7a98ff !important; box-shadow: 0 0 0 4px #315ee817; }
+        .buscar-venta { min-height: 48px !important; border-radius: 12px !important; padding: 13px 15px 13px 43px !important; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23818da2' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-4-4'/%3E%3C/svg%3E") !important; background-repeat: no-repeat !important; background-position: 14px center !important; background-size: 18px !important; }
+        #busqueda { width: 100%; }
+        .form-grid { gap: 15px; }
+        .form-grupo { gap: 7px; }
+        .form-grupo label { color: #637087; font-size: 12px; font-weight: 650; letter-spacing: .01em; }
+        button, .btn { border-radius: 9px; font-weight: 650; transition: transform .16s ease, box-shadow .16s ease, background .16s ease; }
+        button:active, .btn:active { transform: translateY(1px); }
+        .btn { padding: 10px 15px; }
+        .btn-azul { background: var(--pos-primary); box-shadow: 0 3px 8px #315ee825; }
+        .btn-azul:hover { background: var(--pos-primary-dark); box-shadow: 0 5px 12px #315ee832; }
+        .btn-gris { background: #edf1f7; color: #39465c; }
+        .btn-gris:hover { background: #e1e7f0; }
+        .btn-verde { background: #16865c; }
+        .btn-rojo { background: #c83e4d; }
+        .btn-grande { min-height: 49px; border-radius: 12px; }
+        table { border-collapse: separate; border-spacing: 0; overflow: hidden; border: 1px solid var(--pos-line); border-radius: 12px; }
+        th { background: #f5f7fb; color: #66738a; font-size: 11px; font-weight: 750; letter-spacing: .045em; text-transform: uppercase; }
+        th, td { padding: 13px 14px; border-bottom: 1px solid #edf0f5; }
+        tbody tr:last-child td { border-bottom: 0; }
+        tbody tr { transition: background .15s ease; }
+        tbody tr:hover { background: #f7f9ff; }
+        td { color: #39465b; }
+        .producto-venta { padding: 15px 7px; gap: 12px; border-bottom: 1px solid #edf0f5; transition: background .15s ease; }
+        .producto-venta:hover { background: #f8faff; }
+        .producto-venta-info strong { color: #202d43; font-size: 14px; }
+        .producto-venta-info small { display: block; margin-top: 5px; color: #78859a; line-height: 1.5; }
+        .producto-venta-precio { display: inline-block; margin-right: 8px; color: #1f3975; font-size: 15px; }
+        .carrito-panel { top: 18px; }
+        #carrito { border: 1px solid #edf0f5; border-radius: 12px; padding: 12px 15px; background: #fafbfe; }
+        .stock-aviso { margin: 0 0 17px; overflow: hidden; border: 1px solid #f0dfb7; border-radius: 12px; background: #fffcf4; color: #66532c; }
+        .stock-aviso summary { display: flex; align-items: center; gap: 11px; padding: 12px 14px; cursor: pointer; list-style: none; }
+        .stock-aviso summary::-webkit-details-marker { display: none; }
+        .stock-aviso-icono { display: inline-grid; place-items: center; flex: 0 0 27px; width: 27px; height: 27px; border-radius: 9px; background: #f8e9c5; color: #9a6a13; font-weight: 800; }
+        .stock-aviso-texto { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }
+        .stock-aviso-texto strong { font-size: 12px; color: #5e4b26; }
+        .stock-aviso-texto small { color: #8c784f; font-size: 11px; }
+        .stock-aviso-accion { white-space: nowrap; font-size: 11px; color: #80642e; font-weight: 700; }
+        .stock-aviso[open] .stock-aviso-accion span { display: inline-block; transform: rotate(180deg); }
+        .stock-aviso-lista { max-height: 230px; overflow-y: auto; padding: 0 14px 9px; border-top: 1px solid #f2e7ce; }
+        .stock-aviso-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f4ead5; }
+        .stock-aviso-item:last-child { border-bottom: 0; }
+        .stock-aviso-item > span:first-child { display: flex; flex-direction: column; gap: 3px; }
+        .stock-aviso-item strong { font-size: 12px; color: #4c432f; }
+        .stock-aviso-item small { font-size: 10px; color: #968564; }
+        .stock-aviso-cantidad { color: #8a5d12; font-weight: 800; font-size: 13px; white-space: nowrap; }
+        .historial-header { gap: 15px; }
+        .historial-header h2 { font-weight: 750; }
+        .historial-filtros { gap: 12px; }
+        ::-webkit-scrollbar { width: 9px; height: 9px; }
+        ::-webkit-scrollbar-thumb { background: #cbd4e2; border: 2px solid transparent; border-radius: 99px; background-clip: padding-box; }
+        ::-webkit-scrollbar-thumb:hover { background: #aab6c8; border: 2px solid transparent; background-clip: padding-box; }
+        @media (max-width: 1100px) { .sidebar { width: 220px; } .contenido { padding: 22px; } .tarjetas { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+        @media (max-width: 760px) { .app { flex-direction: column; } .sidebar { width: 100%; padding: 12px; } .logo { padding: 5px 8px 13px; } .menu { flex-direction: row; overflow-x: auto; padding-bottom: 4px; } .menu button { flex: 0 0 auto; width: auto; min-height: 39px; white-space: nowrap; } .menu-separador { display: none; } .cerrar { margin-top: 10px; } .contenido { padding: 17px 12px; } .encabezado { align-items: flex-start; flex-direction: column; } .tarjetas { grid-template-columns: 1fr 1fr; } .form-grid { grid-template-columns: 1fr; } .stock-aviso-accion { font-size: 0; } .stock-aviso-accion span { font-size: 14px; } }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+    </style>
+
 </head>
  <body>
 
@@ -973,6 +1074,8 @@ td {
     Proveedores
 </button>
 
+<button id="navCompras" onclick="mostrarPantalla('compras', this)">Compras</button>
+
 <button
     id="navUsuarios"
     onclick="mostrarPantalla('usuarios', this)"
@@ -1048,7 +1151,7 @@ td {
                         type="text"
                         id="busquedaVenta"
                         class="buscar-venta"
-                        placeholder="Buscar producto por nombre o código..."
+                        placeholder="Buscar por nombre, código, marca o categoría…"
                     >
 
                     <input
@@ -1208,6 +1311,29 @@ td {
 
 
         <!-- =========================
+             COMPRAS A PROVEEDORES
+        ========================= -->
+        <section id="pantallaCompras" class="pantalla">
+            <div class="panel">
+                <h2>Registrar compra a proveedor</h2>
+                <p>Al guardar la compra se registra el costo y se aumenta el stock mediante un movimiento de inventario.</p>
+                <div class="form-grid">
+                    <div class="form-grupo"><label>Proveedor</label><select id="compraProveedor"><option value="">Selecciona proveedor</option></select></div>
+                    <div class="form-grupo"><label>Producto</label><select id="compraProducto"><option value="">Selecciona producto</option></select></div>
+                    <div class="form-grupo"><label>Cantidad</label><input id="compraCantidad" type="number" min="1" step="1" value="1"></div>
+                    <div class="form-grupo"><label>Costo unitario</label><input id="compraCosto" type="number" min="0" step="0.01" placeholder="0.00"></div>
+                    <div class="form-grupo"><label>Forma de pago</label><select id="compraMetodoPago"><option value="1">Efectivo</option><option value="2">Tarjeta</option><option value="3">Transferencia</option></select></div>
+                    <div class="form-grupo"><label>Factura / referencia (opcional)</label><input id="compraReferencia" type="text" maxlength="100" placeholder="Folio o factura"></div>
+                </div>
+                <br><button id="agregarLineaCompra" class="btn btn-gris">Añadir producto a la compra</button>
+                <div id="lineasCompra" style="margin-top:15px"></div>
+                <h3 id="totalCompra">Total: $0.00</h3>
+                <button id="guardarCompra" class="btn btn-azul">Guardar compra y actualizar stock</button>
+            </div>
+            <div class="panel"><h2>Compras recientes</h2><button id="actualizarCompras" class="btn btn-gris">Actualizar</button><div id="listaCompras" style="margin-top:15px"></div></div>
+        </section>
+
+        <!-- =========================
              DASHBOARD
         ========================= -->
 
@@ -1353,7 +1479,7 @@ td {
                         <input
                             type="text"
                             id="busqueda"
-                            placeholder="Nombre o código"
+                            placeholder="Nombre, código, marca, categoría o ubicación"
                         >
                     </div>
 
@@ -1409,6 +1535,21 @@ td {
                             id="marca"
                             placeholder="Marca"
                         >
+                    </div>
+
+                    <div class="form-grupo">
+                        <label>Categoría</label>
+                        <input type="text" id="categoria" placeholder="Categoría">
+                    </div>
+
+                    <div class="form-grupo">
+                        <label>Ubicación</label>
+                        <input type="text" id="ubicacion" placeholder="Estante / zona">
+                    </div>
+
+                    <div class="form-grupo" style="grid-column:1/-1">
+                        <label>Descripción</label>
+                        <textarea id="descripcion" placeholder="Descripción del producto"></textarea>
                     </div>
 
                     <div class="form-grupo">
@@ -1470,7 +1611,37 @@ td {
             </div>
 
 
-            <div class="panel tabla-contenedor">
+                        <!-- ================= IMPORTACION_MASIVA_PRODUCTOS_V1 ================= -->
+            <div class="panel" id="panelImportacionMasiva" style="display:none">
+                <h3>Importación masiva de productos</h3>
+                <p>Importa productos desde Excel. La vista previa no modifica la base de datos.</p>
+                <div class="form-grid">
+                    <div class="form-grupo">
+                        <label for="modoImportacionProductos">Operación</label>
+                        <select id="modoImportacionProductos">
+                            <option value="crear">Agregar productos nuevos (no modifica existentes)</option>
+                            <option value="actualizar">Actualizar productos existentes (no cambia stock)</option>
+                        </select>
+                    </div>
+                    <div class="form-grupo">
+                        <label for="archivoImportacionProductos">Archivo Excel (.xlsx)</label>
+                        <input type="file" id="archivoImportacionProductos" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-azul" id="descargarPlantillaProductos">Descargar plantilla Excel</button>
+                <button type="button" class="btn btn-azul" id="validarImportacionProductos">Validar y ver vista previa</button>
+                <button type="button" class="btn btn-azul" id="confirmarImportacionProductos" disabled>Confirmar importación</button>
+                <div id="resultadoImportacionProductos" role="status" aria-live="polite" style="margin-top:12px"></div>
+                <div style="overflow-x:auto;max-width:100%">
+                    <table id="tablaVistaPreviaImportacion" style="display:none;min-width:800px">
+                        <thead><tr><th>Fila</th><th>Código</th><th>Producto</th><th>Costo MXN</th><th>Venta MXN</th><th>Stock archivo</th><th>Resultado</th></tr></thead>
+                        <tbody id="cuerpoVistaPreviaImportacion"></tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- ================= FIN IMPORTACION_MASIVA_PRODUCTOS_V1 ================= -->
+
+<div class="panel tabla-contenedor">
 
                 <h3>
                     Catálogo
@@ -1773,6 +1944,19 @@ td {
 
     </div>
 
+    <div class="panel" id="panelMovimientosCaja">
+        <h2>Entradas, gastos y retiros de efectivo</h2>
+        <p>Estos movimientos ajustan el efectivo esperado al cerrar caja. Registra aquí solo movimientos reales de efectivo.</p>
+        <div class="form-grid">
+            <div class="form-grupo"><label>Tipo</label><select id="movCajaTipo"><option value="SALIDA">Gasto / retiro (sale efectivo)</option><option value="ENTRADA">Entrada de efectivo</option></select></div>
+            <div class="form-grupo"><label>Categoría</label><select id="movCajaCategoria"><option value="GASTO">Gasto del negocio</option><option value="RETIRO">Retiro de efectivo</option><option value="APORTE">Aporte / entrada adicional</option><option value="OTRO">Otro</option></select></div>
+            <div class="form-grupo"><label>Importe</label><input id="movCajaImporte" type="number" min="0.01" step="0.01" placeholder="0.00"></div>
+            <div class="form-grupo"><label>Concepto</label><input id="movCajaConcepto" type="text" placeholder="Motivo del movimiento"></div>
+        </div>
+        <br><button id="guardarMovCaja" class="btn btn-azul">Registrar movimiento de caja</button>
+        <div id="listaMovCaja" style="margin-top:15px"></div>
+    </div>
+
 </section>
 
 
@@ -1875,7 +2059,7 @@ td {
         ========================= -->
 
         <section
-            id="pantallaCaja"
+            id="pantallaCajaLegacy"
             class="pantalla"
         >
 
@@ -1990,6 +2174,7 @@ td {
     >
         Limpiar
     </button>
+    <button id="exportarHistorialCSV" class="btn btn-gris" type="button">Exportar CSV</button>
 
 </div>
 
@@ -2166,6 +2351,20 @@ td {
 
                 </div>
 
+
+                <div id="panelReporteFinanzas" class="panel">
+                    <h2>Resumen financiero</h2>
+                    <p>Incluye ventas completadas, costo de mercancía vendida y gastos registrados como GASTO. Es una estimación operativa, no una contabilidad fiscal.</p>
+                    <div class="form-grid">
+                        <div class="form-grupo"><label>Desde</label><input type="date" id="finanzasDesde"></div>
+                        <div class="form-grupo"><label>Hasta</label><input type="date" id="finanzasHasta"></div>
+                    </div>
+                    <br><button id="consultarFinanzas" class="btn btn-azul">Generar resumen financiero</button>
+                    <button id="exportarInformeExcel" class="btn btn-verde" type="button">
+    Descargar informe Excel (.xlsx)
+</button>
+                    <div id="resultadoFinanzas" style="margin-top:15px"></div>
+                </div>
 
                 <div
                     id="resultadoReporte"
@@ -2468,7 +2667,90 @@ td {
 
 
         // =========================
-        // CARGAR PRODUCTOS
+                // ================= IMPORTACION_MASIVA_PRODUCTOS_V1 =================
+        (function configurarImportacionMasivaProductos() {
+            const panel = document.getElementById('panelImportacionMasiva');
+            if (!panel) return;
+            // El servidor valida permisos de Admin en cada endpoint; la interfaz no depende del momento en que llega la sesión.
+            panel.style.display = 'block';
+            const archivoInput = document.getElementById('archivoImportacionProductos');
+            const operacionInput = document.getElementById('modoImportacionProductos');
+            const botonValidar = document.getElementById('validarImportacionProductos');
+            const botonImportar = document.getElementById('confirmarImportacionProductos');
+            const salida = document.getElementById('resultadoImportacionProductos');
+            const tabla = document.getElementById('tablaVistaPreviaImportacion');
+            const cuerpo = document.getElementById('cuerpoVistaPreviaImportacion');
+            let vistaPreviaLista = false;
+            const token = () => sessionStorage.getItem('tokenPestana');
+            const archivoValido = () => archivoInput.files && archivoInput.files[0] && archivoInput.files[0].name.toLowerCase().endsWith('.xlsx');
+            function limpiarVista() { vistaPreviaLista = false; botonImportar.disabled = true; tabla.style.display = 'none'; cuerpo.replaceChildren(); }
+            async function enviarArchivo(modo) {
+                const form = new FormData();
+                form.append('archivo', archivoInput.files[0]);
+                const operacion = operacionInput.value;
+                const respuesta = await fetch(`/productos/importacion-masiva?modo=${encodeURIComponent(modo)}&operacion=${encodeURIComponent(operacion)}`, {
+                    method: 'POST', headers: { 'x-token-pestana': token() }, body: form
+                });
+                const datos = await respuesta.json().catch(() => ({}));
+                if (!respuesta.ok) throw new Error(datos.error || 'No se pudo procesar el archivo');
+                return datos;
+            }
+            document.getElementById('descargarPlantillaProductos').addEventListener('click', async () => {
+                try {
+                    const respuesta = await fetch('/productos/plantilla-importacion', { headers: { 'x-token-pestana': token() } });
+                    if (!respuesta.ok) { const e = await respuesta.json().catch(() => ({})); throw new Error(e.error || 'No se pudo descargar la plantilla'); }
+                    const blob = await respuesta.blob();
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a'); a.href = url; a.download = 'plantilla_productos_puntoventa2.xlsx'; a.click();
+                    URL.revokeObjectURL(url);
+                } catch (e) { salida.textContent = e.message; }
+            });
+            archivoInput.addEventListener('change', () => { limpiarVista(); salida.textContent = ''; });
+            operacionInput.addEventListener('change', () => { limpiarVista(); salida.textContent = 'La operación cambió. Vuelve a validar el archivo.'; });
+            botonValidar.addEventListener('click', async () => {
+                limpiarVista();
+                if (!archivoValido()) { salida.textContent = 'Selecciona un archivo Excel .xlsx.'; return; }
+                botonValidar.disabled = true; salida.textContent = 'Validando archivo…';
+                try {
+                    const datos = await enviarArchivo('validar');
+                    const r = datos.resumen;
+                    salida.textContent = `Vista previa: ${r.nuevos} nuevos, ${r.actualizables} actualizables, ${r.omitidos} omitidos y ${r.errores} con errores. Los errores se saltarán; revisa las filas antes de confirmar.`;
+                    datos.filas.forEach(f => {
+                        const tr = document.createElement('tr');
+                        [f.fila, f.codigo, f.nombre, Number(f.precio_compra || 0).toLocaleString('es-MX',{style:'currency',currency:'MXN'}),
+                         Number(f.precio_venta || 0).toLocaleString('es-MX',{style:'currency',currency:'MXN'}), f.stock,
+                         `${f.estado}${f.errores.length ? ': ' + f.errores.join('; ') : ''}`]
+                            .forEach(v => { const td = document.createElement('td'); td.textContent = String(v ?? ''); tr.appendChild(td); });
+                        cuerpo.appendChild(tr);
+                    });
+                    tabla.style.display = 'table';
+                    vistaPreviaLista = (operacionInput.value === 'crear' ? r.nuevos : r.actualizables) > 0;
+                    botonImportar.disabled = !vistaPreviaLista;
+                } catch (e) { salida.textContent = e.message; }
+                finally { botonValidar.disabled = false; }
+            });
+            botonImportar.addEventListener('click', async () => {
+                if (!vistaPreviaLista || !archivoValido()) { salida.textContent = 'Vuelve a validar el archivo antes de confirmar.'; return; }
+                const mensaje = operacionInput.value === 'crear'
+                    ? 'Se agregarán los productos nuevos válidos. Los códigos existentes se omitirán. ¿Continuar?'
+                    : 'Se actualizarán los datos de productos existentes, pero NO se modificarán las existencias. ¿Continuar?';
+                if (!confirm(mensaje)) return;
+                botonImportar.disabled = true; botonValidar.disabled = true; salida.textContent = 'Procesando importación…';
+                try {
+                    const datos = await enviarArchivo('importar');
+                    salida.textContent = `Finalizado. Nuevos: ${datos.importados}; actualizados: ${datos.actualizados}; omitidos: ${datos.omitidos}; filas con errores: ${datos.errores}.`;
+                    if (datos.detalleErrores && datos.detalleErrores.length) {
+                        salida.textContent += ' Detalles: ' + datos.detalleErrores.map(e => `fila ${e.fila}: ${e.errores.join(', ')}`).join(' | ');
+                    }
+                    limpiarVista();
+                    if (typeof cargarProductos === 'function') await cargarProductos();
+                } catch (e) { salida.textContent = e.message; }
+                finally { botonValidar.disabled = false; }
+            });
+        })();
+        // ================= FIN IMPORTACION_MASIVA_PRODUCTOS_V1 =================
+
+// CARGAR PRODUCTOS
         // =========================
 
         async function cargarProductos() {
@@ -2529,45 +2811,32 @@ productos.forEach(producto => {
     const alerta =
         document.getElementById('alertaStockBajo');
 
-    const productosBajos =
-        lista.filter(
-            producto =>
-                producto.stock <= producto.stock_minimo
-        );
+    // El aviso es global, no cambia al filtrar el catálogo.
+    const productosBajos = (Array.isArray(productos) ? productos : lista)
+        .filter(producto => Number(producto.stock) <= Number(producto.stock_minimo));
 
-    if (productosBajos.length > 0) {
-
-        alerta.innerHTML = `
-            <div style="
-                padding: 12px;
-                margin: 10px 0;
-                border: 1px solid #ff0000;
-                border-radius: 6px;
-            ">
-                <strong>
-                    🔴 Stock bajo:
-                    ${productosBajos.length} producto(s)
-                </strong>
-
-                <br><br>
-
-                ${productosBajos.map(producto => `
-                    <div>
-                        ${producto.codigo} -
-                        ${producto.nombre}:
-                        <strong style="color:red;">
-                            ${producto.stock}
-                        </strong>
-                        unidades
+    if (alerta) {
+        if (productosBajos.length > 0) {
+            alerta.innerHTML = `
+                <details class="stock-aviso">
+                    <summary>
+                        <span class="stock-aviso-icono" aria-hidden="true">!</span>
+                        <span class="stock-aviso-texto"><strong>Inventario por revisar</strong><small>${productosBajos.length} producto(s) en su mínimo o por debajo</small></span>
+                        <span class="stock-aviso-accion">Ver detalles <span aria-hidden="true">⌄</span></span>
+                    </summary>
+                    <div class="stock-aviso-lista">
+                        ${productosBajos.map(producto => `
+                            <div class="stock-aviso-item">
+                                <span><strong>${escaparHTML(producto.nombre)}</strong><small>Código ${escaparHTML(producto.codigo)}</small></span>
+                                <span class="stock-aviso-cantidad">${Number(producto.stock)} <small>uds.</small></span>
+                            </div>
+                        `).join('')}
                     </div>
-                `).join('')}
-            </div>
-        `;
-
-    } else {
-
-        alerta.innerHTML = '';
-
+                </details>
+            `;
+        } else {
+            alerta.innerHTML = '';
+        }
     }
 
     lista.forEach((producto, index) => {
@@ -2579,9 +2848,9 @@ productos.forEach(producto => {
 
             <td>${index + 1}</td>
 
-            <td>${producto.codigo}</td>
+            <td>${escaparHTML(producto.codigo)}</td>
 
-            <td>${producto.nombre}</td>
+            <td>${escaparHTML(producto.nombre)}</td>
 
             <td>
                 $${Number(
@@ -2628,17 +2897,8 @@ productos.forEach(producto => {
                     Agregar
                 </button>
 
-                <button
-                    onclick="editarProducto(${producto.id})"
-                >
-                    Editar
-                </button>
-
-                <button
-                    onclick="eliminarProducto(${producto.id})"
-                >
-                    Eliminar
-                </button>
+                ${window.posRol === 'Admin' ? `<button onclick="editarProducto(${Number(producto.id)})">Editar</button>
+                <button onclick="eliminarProducto(${Number(producto.id)})">Eliminar</button>` : ''}
 
             </td>
 
@@ -2649,6 +2909,38 @@ productos.forEach(producto => {
     });
 }
 
+        // Búsqueda común: tolera mayúsculas, acentos y busca en código,
+        // nombre, marca, categoría, descripción y ubicación.
+        function normalizarBusquedaPOS(valor) {
+            return String(valor || '')
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .trim()
+                .toLocaleLowerCase('es');
+        }
+
+        function buscarProductosPOS(texto) {
+            const todos = Array.isArray(productos) ? productos : [];
+            if (!texto) return todos.slice();
+            const campos = p => [p.codigo, p.nombre, p.marca, p.categoria, p.descripcion, p.ubicacion]
+                .map(normalizarBusquedaPOS);
+            return todos
+                .map(producto => {
+                    const valores = campos(producto);
+                    const codigo = valores[0] || '';
+                    const nombre = valores[1] || '';
+                    const puntuacion = codigo === texto ? 0
+                        : nombre === texto ? 1
+                        : codigo.startsWith(texto) ? 2
+                        : nombre.startsWith(texto) ? 3
+                        : valores.some(v => v.includes(texto)) ? 4 : 99;
+                    return { producto, puntuacion };
+                })
+                .filter(item => item.puntuacion < 99)
+                .sort((a, b) => a.puntuacion - b.puntuacion || String(a.producto.nombre).localeCompare(String(b.producto.nombre), 'es'))
+                .map(item => item.producto);
+        }
+
         // =========================
         // BUSCADOR
         // =========================
@@ -2656,26 +2948,8 @@ productos.forEach(producto => {
         document
             .getElementById('busqueda')
             .addEventListener('input', function () {
-
-                const texto =
-                    this.value.toLowerCase();
-
-
-                const filtrados =
-                    productos.filter(producto =>
-
-                        String(producto.nombre)
-                            .toLowerCase()
-                            .includes(texto)
-
-                        ||
-
-                        String(producto.codigo)
-                            .toLowerCase()
-                            .includes(texto)
-                    );
-
-
+                const texto = normalizarBusquedaPOS(this.value);
+                const filtrados = buscarProductosPOS(texto);
                 mostrarProductos(filtrados);
             });
 
@@ -2766,6 +3040,9 @@ productos.forEach(producto => {
                                 codigo,
                                 nombre,
                                 marca,
+                                categoria: document.getElementById('categoria').value.trim(),
+                                descripcion: document.getElementById('descripcion').value.trim(),
+                                ubicacion: document.getElementById('ubicacion').value.trim(),
                                 precio_compra,
                                 precio_venta,
                                 stock,
@@ -2803,9 +3080,12 @@ productos.forEach(producto => {
                         .getElementById('nombre')
                         .value = '';
 
-                    document
-                        .getElementById('marca')
-                        .value = '';
+                    document.getElementById('marca').value = '';
+                    document.getElementById('categoria').value = '';
+                    document.getElementById('descripcion').value = '';
+                    document.getElementById('ubicacion').value = '';
+                    document.getElementById('precio_compra').value = '';
+                    document.getElementById('stock_minimo').value = '';
 
                     document
                         .getElementById('precio_venta')
@@ -2945,7 +3225,9 @@ async function editarProducto(id) {
 
                     headers: {
                         'Content-Type':
-                            'application/json'
+                            'application/json',
+                        'x-token-pestana':
+                            sessionStorage.getItem('tokenPestana')
                     },
 
                     body: JSON.stringify({
@@ -3383,8 +3665,9 @@ async function editarProducto(id) {
 
 document.getElementById('verMovimientos').addEventListener('click', async () => {
     try {
-        const respuesta = await fetch('/movimientos');
+        const respuesta = await fetch('/movimientos', { headers: { 'x-token-pestana': sessionStorage.getItem('tokenPestana') } });
         const movimientos = await respuesta.json();
+        if (!respuesta.ok) throw new Error(movimientos.error || 'No se pudieron cargar los movimientos');
 
         const contenedor = document.getElementById('historialMovimientos');
 
@@ -3481,39 +3764,25 @@ const codigoEscaner =
 
 if (codigoEscaner) {
 
-    codigoEscaner.addEventListener(
-        'input',
-        function () {
-
-            const codigo =
-                this.value.trim();
-
-            if (!codigo) {
-                return;
-            }
-
-            const producto =
-                productos.find(
-                    producto =>
-                        String(producto.codigo)
-                            .trim()
-                            .toLowerCase() ===
-                        codigo.toLowerCase()
-                );
-
-            if (!producto) {
-                return;
-            }
-
-            agregarAlCarrito(
-                producto.id
-            );
-
-            this.value = '';
-
-            this.focus();
-        }
-    );
+    let temporizadorEscaner = null;
+    const procesarCodigoEscaner = () => {
+        const codigo = codigoEscaner.value.trim();
+        if (!codigo) return;
+        const producto = productos.find(p => String(p.codigo).trim().toLowerCase() === codigo.toLowerCase());
+        if (!producto) return;
+        agregarAlCarrito(producto.id);
+        codigoEscaner.value = '';
+        codigoEscaner.focus();
+    };
+    // Muchos lectores escriben el código y terminan con Enter; el temporizador
+    // también admite lectores que no envían sufijo, evitando agregar cada tecla.
+    codigoEscaner.addEventListener('input', () => {
+        clearTimeout(temporizadorEscaner);
+        temporizadorEscaner = setTimeout(procesarCodigoEscaner, 180);
+    });
+    codigoEscaner.addEventListener('keydown', evento => {
+        if (evento.key === 'Enter') { evento.preventDefault(); clearTimeout(temporizadorEscaner); procesarCodigoEscaner(); }
+    });
 }
 
         // =========================
@@ -4020,24 +4289,37 @@ const respuesta = await fetch('/sesion', {
     }
 
     const datos = await respuesta.json();
+    window.posRol = datos.rol;
+    window.posAdminPrincipal = datos.admin_principal === true;
+    if (datos.rol !== 'Admin') {
+        if (document.getElementById('navCompras')) document.getElementById('navCompras').style.display = 'none';
+        if (document.getElementById('nuevoProveedor')) document.getElementById('nuevoProveedor').style.display = 'none';
+        if (document.getElementById('panelMovimientosCaja')) document.getElementById('panelMovimientosCaja').style.display = 'none';
+    }
+    if (!window.posAdminPrincipal) {
+        const finanzas = document.getElementById('panelReporteFinanzas');
+        if (finanzas) finanzas.style.display = 'none';
+    }
     if (datos.rol !== 'Admin' || datos.admin_principal !== true) {
-    document.getElementById('abrirUsuarios').style.display = 'none';
+    (document.getElementById('navUsuarios') || document.getElementById('abrirUsuarios'))?.style && ((document.getElementById('navUsuarios') || document.getElementById('abrirUsuarios')).style.display = 'none');
 }
 if (datos.rol === 'Empleado' ||
     datos.admin_principal !== true) {
-        document.getElementById('ventasHoyCaja').style.display = 'none';
-document.getElementById('vendidoHoyCaja').style.display = 'none';
-document.getElementById('utilidadHoyCaja').style.display = 'none';
-        document.getElementById('abrirReportes').style.display = 'none';
-        document.getElementById('verInventario').style.display = 'none';
-        document.getElementById('agregarProducto').style.display = 'none';
-document.getElementById('consultarReporte').style.display = 'none';
+        if (document.getElementById('ventasHoyCaja')) document.getElementById('ventasHoyCaja').style.display = 'none';
+if (document.getElementById('vendidoHoyCaja')) document.getElementById('vendidoHoyCaja').style.display = 'none';
+if (document.getElementById('utilidadHoyCaja')) document.getElementById('utilidadHoyCaja').style.display = 'none';
+        (document.getElementById('navReportes') || document.getElementById('abrirReportes'))?.style && ((document.getElementById('navReportes') || document.getElementById('abrirReportes')).style.display = 'none');
+        if (document.getElementById('verInventario')) document.getElementById('verInventario').style.display = 'none';
+        if (document.getElementById('agregarProducto')) document.getElementById('agregarProducto').style.display = 'none';
+if (document.getElementById('consultarReporte')) document.getElementById('consultarReporte').style.display = 'none';
     }
 }
-window.addEventListener('DOMContentLoaded', () => {
-cargarSesion();
-cargarProductos();
-cargarDashboard();
+window.addEventListener('DOMContentLoaded', async () => {
+    await cargarSesion();
+    await cargarProductos();
+    if (typeof window.cargarProveedores === 'function') await window.cargarProveedores();
+    if (typeof window.cargarDatosCompras === 'function') await window.cargarDatosCompras();
+    await cargarDashboard();
 });
  document.getElementById('cerrarSesion').addEventListener('click', async () => {
 
@@ -4097,6 +4379,7 @@ function mostrarPantalla(nombre, boton) {
         historial: 'Historial de ventas',
         reportes: 'Reportes',
         proveedores:'Proveedores',
+        compras: 'Compras a proveedores',
         usuarios: 'Usuarios',
         dashboard: 'Resumen'
 
@@ -4115,12 +4398,17 @@ function mostrarPantalla(nombre, boton) {
         cargarHistorialProfesional();
     }
 
-}
-if (
-    nombre === 'proveedores' &&
-    typeof cargarProveedores === 'function'
-) {
-    cargarProveedores();
+    if (nombre === 'proveedores' && typeof window.cargarProveedores === 'function') {
+        window.cargarProveedores();
+    }
+
+    if (nombre === 'compras' && typeof window.cargarDatosCompras === 'function') {
+        window.cargarDatosCompras();
+    }
+
+    if (nombre === 'caja' && typeof window.cargarMovimientosCaja === 'function') {
+        window.cargarMovimientosCaja();
+    }
 }
 document
     .getElementById('navVentas')
@@ -4166,7 +4454,7 @@ function mostrarProductosVenta(lista) {
                     </strong>
 
                     <small>
-                        Código: ${producto.codigo}
+                        Código: ${escaparHTML(producto.codigo)}
                         · Stock: ${producto.stock}
                     </small>
 
@@ -4202,29 +4490,8 @@ function mostrarProductosVenta(lista) {
 document
     .getElementById('busquedaVenta')
     ?.addEventListener('input', function () {
-
-        const texto =
-            this.value
-                .trim()
-                .toLowerCase();
-
-        const filtrados =
-            productos.filter(producto =>
-
-                String(producto.nombre)
-                    .toLowerCase()
-                    .includes(texto)
-
-                ||
-
-                String(producto.codigo)
-                    .toLowerCase()
-                    .includes(texto)
-
-            );
-
-        mostrarProductosVenta(filtrados);
-
+        const texto = normalizarBusquedaPOS(this.value);
+        mostrarProductosVenta(buscarProductosPOS(texto));
     });
 
 
@@ -5034,9 +5301,9 @@ function mostrarProductosVenta(lista) {
         lista.map(producto => `
             <div class="producto-venta">
                 <div class="producto-venta-info">
-                    <strong>${producto.nombre}</strong>
+                    <strong>${escaparHTML(producto.nombre)}</strong>
                     <small>
-                        Código: ${producto.codigo}
+                        Código: ${escaparHTML(producto.codigo)}
                         · Stock: ${producto.stock}
                     </small>
                 </div>
@@ -5071,17 +5338,18 @@ imprimirTicket.addEventListener(
     'click',
     () => {
 
-        const contenido =
-            document.getElementById(
-                'ticketImpresion'
-            ).innerHTML;
+        const nodoTicket = document.getElementById('ticketImpresion') || ticketContenido;
+        if (!nodoTicket) {
+            alert('No hay contenido de ticket para imprimir.');
+            return;
+        }
+        const contenido = nodoTicket.innerHTML;
 
-        const ventana =
-            window.open(
-                '',
-                '',
-                'width=400,height=700'
-            );
+        const ventana = window.open('', '', 'width=400,height=700');
+        if (!ventana) {
+            alert('El navegador bloqueó la ventana de impresión. Permite las ventanas emergentes para este POS.');
+            return;
+        }
 
         ventana.document.write(`
             <html>
@@ -5394,7 +5662,7 @@ function imprimirTicketAutomatico(
                 margin:8px 0;
             ">
                 <div>
-                    <strong>${producto.nombre}</strong>
+                    <strong>${escaparHTML(producto.nombre)}</strong>
                     <br>
                     ${producto.cantidad}
                     x
@@ -6627,9 +6895,8 @@ async function abrirDetalleHistorial(id) {
         contenido.innerHTML = `
             <div class="detalle-venta-header">
                 <h2>Venta #${venta.id}</h2>
-                <button class="btn btn-historial-ticket" onclick="imprimirHistorial(${venta.id})">
-                    Reimprimir ticket
-                </button>
+                <button class="btn btn-historial-ticket" onclick="imprimirHistorial(${venta.id})">Reimprimir ticket</button>
+                ${window.posRol === 'Admin' && venta.estado === 'COMPLETADA' ? `<button class="btn btn-rojo" onclick="anularVentaPOS(${Number(venta.id)})">Anular venta</button>` : ''}
             </div>
             <div class="detalle-venta-datos">
                 <div class="detalle-venta-dato"><span>Fecha</span><strong>${fecha.toLocaleDateString('es-MX')}</strong></div>
@@ -6647,7 +6914,7 @@ async function abrirDetalleHistorial(id) {
                     ${productos.map(p => `
                         <tr>
                             <td>${p.codigo}</td>
-                            <td>${p.nombre}</td>
+                            <td>${escaparHTML(p.nombre)}</td>
                             <td>${p.cantidad}</td>
                             <td>${formatoDineroHistorial(p.precio)}</td>
                             <td>${formatoDineroHistorial(p.subtotal)}</td>
@@ -6693,7 +6960,7 @@ async function imprimirHistorial(id) {
             <div class="centro">Venta #${venta.id}<br>${fecha.toLocaleString('es-MX')}</div>
             <div class="linea"></div>
             <table>
-                ${datos.productos.map(p => `<tr><td>${p.cantidad} × ${p.nombre}<br><span class="pequeno">${p.codigo}</span></td><td class="derecha">${formatoDineroHistorial(p.subtotal)}</td></tr>`).join('')}
+                ${datos.productos.map(p => `<tr><td>${p.cantidad} × ${escaparHTML(p.nombre)}<br><span class="pequeno">${escaparHTML(p.codigo)}</span></td><td class="derecha">${formatoDineroHistorial(p.subtotal)}</td></tr>`).join('')}
             </table>
             <div class="linea"></div>
             <table>
@@ -6741,6 +7008,11 @@ window.addEventListener('resize', () => {
 
 window.cargarHistorialProfesional =
     cargarHistorialProfesional;
+// Escapa texto de datos de la base antes de insertarlo en HTML.
+function escaparHTML(valor) {
+    return String(valor ?? '').replace(/[&<>\"']/g, caracter => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[caracter]));
+}
+
 // ========================================
 // PROVEEDORES
 // ========================================
@@ -6934,10 +7206,8 @@ console.log(
             );
         }
 
-        const lista =
-            document.getElementById(
-                'listaProveedores'
-            );
+        const lista = document.getElementById('listaProveedores');
+        if (!lista) return;
 
         if (!proveedores.length) {
 
@@ -6962,39 +7232,28 @@ proveedores.forEach(proveedor => {
     elemento.innerHTML = `
 
         <strong>
-            ${proveedor.nombre}
+            ${escaparHTML(proveedor.nombre)}
         </strong>
 
         <br>
 
         Empresa:
-        ${proveedor.empresa || 'Sin empresa'}
+        ${escaparHTML(proveedor.empresa || 'Sin empresa')}
 
         <br>
 
         Teléfono:
-        ${proveedor.telefono || 'Sin teléfono'}
+        ${escaparHTML(proveedor.telefono || 'Sin teléfono')}
 
         <br>
 
         Correo:
-        ${proveedor.correo || 'Sin correo'}
+        ${escaparHTML(proveedor.correo || 'Sin correo')}
 
         <br><br>
 
-        <button
-            class="btn btn-azul"
-            onclick="editarProveedor(${proveedor.id})"
-        >
-            Editar
-        </button>
-
-        <button
-            class="btn btn-gris"
-            onclick="eliminarProveedor(${proveedor.id})"
-        >
-            Eliminar
-        </button>
+        ${window.posRol === 'Admin' ? `<button class="btn btn-azul" onclick="editarProveedor(${Number(proveedor.id)})">Editar</button>
+        <button class="btn btn-gris" onclick="eliminarProveedor(${Number(proveedor.id)})">Eliminar</button>` : ''}
 
         <hr>
 
@@ -7005,12 +7264,9 @@ proveedores.forEach(proveedor => {
 });
 
     } catch (error) {
-
-        console.error(
-            'ERROR AL CARGAR PROVEEDORES:',
-            error
-        );
-
+        console.error('ERROR AL CARGAR PROVEEDORES:', error);
+        const lista = document.getElementById('listaProveedores');
+        if (lista) lista.textContent = 'No se pudieron cargar los proveedores: ' + error.message;
     }
 
 }
@@ -7159,27 +7415,185 @@ async function editarProveedor(id) {
     botonNuevoProveedor.addEventListener(
         'click',
         () => {
-
-            formularioProveedor.style.display =
-                'block';
-
+            proveedorEditandoId = null;
+            if (formularioProveedor) formularioProveedor.style.display = 'block';
         }
     );
 
+    window.cargarProveedores = cargarProveedores;
+    window.editarProveedor = editarProveedor;
+    window.eliminarProveedor = eliminarProveedor;
 }
 
 if (cancelarProveedor) {
-
-    cancelarProveedor.addEventListener(
-        'click',
-        () => {
-
-            formularioProveedor.style.display =
-                'none';
-        }
-    );
-
+    cancelarProveedor.addEventListener('click', () => {
+        if (formularioProveedor) formularioProveedor.style.display = 'none';
+        proveedorEditandoId = null;
+    });
 }
+
+const buscarProveedor = document.getElementById('buscarProveedor');
+if (buscarProveedor) {
+    buscarProveedor.addEventListener('input', () => {
+        const filtro = buscarProveedor.value.trim().toLocaleLowerCase('es');
+        document.querySelectorAll('#listaProveedores .proveedor-item').forEach(item => {
+            item.hidden = !item.textContent.toLocaleLowerCase('es').includes(filtro);
+        });
+    });
+}
+
+
+// ============================================================
+// COMPRAS Y MOVIMIENTOS DE CAJA
+// ============================================================
+const lineasCompraPOS = [];
+const tokenPOS = () => sessionStorage.getItem('tokenPestana');
+async function fetchPOS(url, options = {}) {
+    const headers = { ...(options.headers || {}), 'x-token-pestana': tokenPOS() };
+    if (options.body && !headers['Content-Type']) headers['Content-Type'] = 'application/json';
+    const response = await fetch(url, { ...options, headers });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || `Error HTTP ${response.status}`);
+    return data;
+}
+function monedaPOS(valor) { return '$' + Number(valor || 0).toLocaleString('es-MX', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+async function cargarDatosCompras() {
+    try {
+        const [proveedores, productos] = await Promise.all([fetchPOS('/proveedores'), fetchPOS('/productos')]);
+        const selProv = document.getElementById('compraProveedor');
+        const selProd = document.getElementById('compraProducto');
+        if (selProv) selProv.innerHTML = '<option value="">Selecciona proveedor</option>' + proveedores.map(p=>`<option value="${Number(p.id)}">${escaparHTML(p.nombre)}${p.empresa ? ' — '+escaparHTML(p.empresa):''}</option>`).join('');
+        if (selProd) selProd.innerHTML = '<option value="">Selecciona producto</option>' + productos.map(p=>`<option value="${Number(p.id)}" data-coste="${Number(p.precio_compra)||0}">${escaparHTML(p.codigo)} — ${escaparHTML(p.nombre)} (stock ${Number(p.stock)||0})</option>`).join('');
+        const coste = document.getElementById('compraCosto');
+        if (selProd && coste) selProd.onchange = () => { const op=selProd.selectedOptions[0]; if(op && !coste.value) coste.value=op.dataset.coste || ''; };
+        await cargarListaCompras();
+    } catch (e) { console.error('Compras:', e); const lista=document.getElementById('listaCompras'); if(lista) lista.textContent='No se pudieron cargar proveedores/productos: '+e.message; }
+}
+function pintarLineasCompra() {
+    const cont=document.getElementById('lineasCompra'); if(!cont) return;
+    if(!lineasCompraPOS.length) { cont.innerHTML='<p>Aún no has añadido productos a la compra.</p>'; }
+    else cont.innerHTML='<table><thead><tr><th>Producto</th><th>Cantidad</th><th>Costo</th><th>Subtotal</th><th></th></tr></thead><tbody>'+lineasCompraPOS.map((l,i)=>`<tr><td>${escaparHTML(l.nombre)}</td><td>${l.cantidad}</td><td>${monedaPOS(l.costo_unitario)}</td><td>${monedaPOS(l.cantidad*l.costo_unitario)}</td><td><button class="btn btn-gris" data-quitar-compra="${i}">Quitar</button></td></tr>`).join('')+'</tbody></table>';
+    const total=document.getElementById('totalCompra'); if(total) total.textContent='Total: '+monedaPOS(lineasCompraPOS.reduce((s,l)=>s+l.cantidad*l.costo_unitario,0));
+    cont.querySelectorAll('[data-quitar-compra]').forEach(b=>b.addEventListener('click',()=>{lineasCompraPOS.splice(Number(b.dataset.quitarCompra),1);pintarLineasCompra();}));
+}
+const agregarLineaCompra=document.getElementById('agregarLineaCompra');
+if(agregarLineaCompra) agregarLineaCompra.addEventListener('click',()=>{
+    const sel=document.getElementById('compraProducto'), id=Number(sel?.value), op=sel?.selectedOptions[0];
+    const cantidad=Number(document.getElementById('compraCantidad')?.value), costo=Number(document.getElementById('compraCosto')?.value);
+    if(!id || !op || !Number.isInteger(cantidad)||cantidad<=0||!Number.isFinite(costo)||costo<0) return alert('Selecciona producto e introduce cantidad y costo válidos.');
+    const anterior=lineasCompraPOS.find(x=>x.producto_id===id);
+    if(anterior){anterior.cantidad+=cantidad;anterior.costo_unitario=costo;} else lineasCompraPOS.push({producto_id:id,nombre:op.textContent,cantidad,costo_unitario:costo});
+    document.getElementById('compraCantidad').value='1'; document.getElementById('compraCosto').value=''; pintarLineasCompra();
+});
+const guardarCompra=document.getElementById('guardarCompra');
+if(guardarCompra) guardarCompra.addEventListener('click',async()=>{
+    const proveedor_id=Number(document.getElementById('compraProveedor')?.value), metodo_pago=document.getElementById('compraMetodoPago')?.value;
+    if(!proveedor_id||!lineasCompraPOS.length) return alert('Selecciona proveedor y añade al menos un producto.');
+    if(!confirm('¿Registrar esta compra y aumentar el stock? Revisa que no hayas registrado ya esta factura.')) return;
+    guardarCompra.disabled=true;
+    try { const r=await fetchPOS('/compras',{method:'POST',body:JSON.stringify({proveedor_id,metodo_pago,referencia:document.getElementById('compraReferencia')?.value.trim()||'',lineas:lineasCompraPOS.map(({producto_id,cantidad,costo_unitario})=>({producto_id,cantidad,costo_unitario}))})});
+        alert(`Compra #${r.compra.id} registrada. Total: ${monedaPOS(r.compra.total)}.`); if(document.getElementById('compraReferencia'))document.getElementById('compraReferencia').value=''; lineasCompraPOS.length=0;pintarLineasCompra();await cargarDatosCompras();if(typeof cargarProductos==='function') await cargarProductos();
+    } catch(e){alert('No se pudo guardar la compra: '+e.message);} finally{guardarCompra.disabled=false;}
+});
+async function cargarListaCompras(){
+    const cont=document.getElementById('listaCompras'); if(!cont)return;
+    try { const rows=await fetchPOS('/compras'); if(!rows.length){cont.innerHTML='<p>No hay compras registradas.</p>';return;}
+        cont.innerHTML='<table><thead><tr><th>Fecha</th><th>Compra</th><th>Proveedor</th><th>Referencia</th><th>Pago</th><th>Total</th><th>Usuario</th><th></th></tr></thead><tbody>'+rows.map(c=>`<tr><td>${new Date(c.fecha).toLocaleString('es-MX')}</td><td>#${Number(c.id)}</td><td>${escaparHTML(c.proveedor_nombre)}</td><td>${escaparHTML(c.referencia||'—')}</td><td>${({'1':'Efectivo','2':'Tarjeta','3':'Transferencia'})[c.metodo_pago]||'Otro'}</td><td>${monedaPOS(c.total)}</td><td>${escaparHTML(c.usuario_nombre||'—')}</td><td><button class="btn btn-gris" data-ver-compra="${Number(c.id)}">Detalle</button></td></tr>`).join('')+'</tbody></table>';
+        cont.querySelectorAll('[data-ver-compra]').forEach(b=>b.addEventListener('click',()=>window.verCompraPOS(Number(b.dataset.verCompra))));
+    }catch(e){cont.textContent='No se pudieron cargar las compras: '+e.message;}
+}
+window.verCompraPOS = async function(id){
+    try{const data=await fetchPOS(`/compras/${Number(id)}`);const c=data.compra;const lineas=data.lineas.map(l=>`${l.cantidad} x ${l.codigo} - ${l.nombre} @ ${monedaPOS(l.costo_unitario)} = ${monedaPOS(l.subtotal)}`).join('\n');alert(`COMPRA #${c.id}\nProveedor: ${c.proveedor_nombre}\nReferencia: ${c.referencia||'—'}\nFecha: ${new Date(c.fecha).toLocaleString('es-MX')}\n\n${lineas}\n\nTOTAL: ${monedaPOS(c.total)}`);}catch(e){alert(e.message);}
+};
+const actualizarCompras=document.getElementById('actualizarCompras'); if(actualizarCompras) actualizarCompras.addEventListener('click',cargarListaCompras);
+window.cargarDatosCompras=cargarDatosCompras;
+
+async function cargarMovimientosCaja(){
+    const cont=document.getElementById('listaMovCaja'); if(!cont)return;
+    try { const rows=await fetchPOS('/caja/movimientos'); if(!rows.length){cont.innerHTML='<p>No hay movimientos adicionales de caja.</p>';return;}
+        cont.innerHTML='<table><thead><tr><th>Fecha</th><th>Tipo</th><th>Categoría</th><th>Importe</th><th>Concepto</th><th>Usuario</th></tr></thead><tbody>'+rows.map(m=>`<tr><td>${new Date(m.fecha).toLocaleString('es-MX')}</td><td>${escaparHTML(m.tipo)}</td><td>${escaparHTML(m.categoria)}</td><td>${monedaPOS(m.importe)}</td><td>${escaparHTML(m.concepto||'')}</td><td>${escaparHTML(m.usuario_nombre||'—')}</td></tr>`).join('')+'</tbody></table>';
+    }catch(e){cont.textContent='No se pudieron cargar los movimientos: '+e.message;}
+}
+window.cargarMovimientosCaja=cargarMovimientosCaja;
+const guardarMovCaja=document.getElementById('guardarMovCaja');
+if(guardarMovCaja) guardarMovCaja.addEventListener('click',async()=>{
+    const tipo=document.getElementById('movCajaTipo').value,categoria=document.getElementById('movCajaCategoria').value,importe=Number(document.getElementById('movCajaImporte').value),concepto=document.getElementById('movCajaConcepto').value.trim();
+    if(!Number.isFinite(importe)||importe<=0||!concepto) return alert('Introduce un importe mayor a cero y un concepto.');
+    if(!confirm(`¿Registrar ${tipo==='SALIDA'?'salida':'entrada'} de ${monedaPOS(importe)}?`))return;
+    guardarMovCaja.disabled=true;
+    try{await fetchPOS('/caja/movimientos',{method:'POST',body:JSON.stringify({tipo,categoria,importe,concepto})});alert('Movimiento de caja registrado.');document.getElementById('movCajaImporte').value='';document.getElementById('movCajaConcepto').value='';await cargarMovimientosCaja();}
+    catch(e){alert('No se pudo registrar: '+e.message);}finally{guardarMovCaja.disabled=false;}
+});
+
+const consultarFinanzas = document.getElementById('consultarFinanzas');
+if (consultarFinanzas) consultarFinanzas.addEventListener('click', async () => {
+    const desde=document.getElementById('finanzasDesde')?.value||'';
+    const hasta=document.getElementById('finanzasHasta')?.value||'';
+    if(desde&&hasta&&desde>hasta)return alert('La fecha inicial no puede ser posterior a la fecha final.');
+    const params=new URLSearchParams();if(desde)params.set('desde',desde);if(hasta)params.set('hasta',hasta);
+    const out=document.getElementById('resultadoFinanzas');out.textContent='Generando reporte…';
+    try{const data=await fetchPOS('/reportes/finanzas?'+params.toString());out.innerHTML=`<div class="historial-resumen"><div class="historial-card"><span>Ventas</span><strong>${data.numero_ventas}</strong></div><div class="historial-card"><span>Ingresos</span><strong>${monedaPOS(data.ingresos)}</strong></div><div class="historial-card"><span>Costo de mercancía vendida</span><strong>${monedaPOS(data.costo_mercancia)}</strong></div><div class="historial-card"><span>Utilidad bruta estimada</span><strong>${monedaPOS(data.utilidad_bruta)}</strong></div><div class="historial-card"><span>Gastos registrados</span><strong>${monedaPOS(data.gastos)}</strong></div><div class="historial-card"><span>Utilidad neta estimada</span><strong>${monedaPOS(data.utilidad_neta_estimada)}</strong></div></div>`;}
+    catch(e){out.textContent='No se pudo generar el reporte: '+e.message;}
+});
+const exportarInformeExcel = document.getElementById('exportarInformeExcel');
+if (exportarInformeExcel) exportarInformeExcel.addEventListener('click', async () => {
+    const desde = document.getElementById('finanzasDesde')?.value || '';
+    const hasta = document.getElementById('finanzasHasta')?.value || '';
+    if (desde && hasta && desde > hasta) return alert('La fecha inicial no puede ser posterior a la fecha final.');
+    const params = new URLSearchParams();
+    if (desde) params.set('desde', desde);
+    if (hasta) params.set('hasta', hasta);
+    const original = exportarInformeExcel.textContent;
+    exportarInformeExcel.disabled = true;
+    exportarInformeExcel.textContent = 'Preparando Excel…';
+    try {
+        const response = await fetch('/reportes/exportar-excel?' + params.toString(), { headers: { 'x-token-pestana': tokenPOS() } });
+        if (!response.ok) {
+            const data = await response.json().catch(() => ({}));
+            throw new Error(data.error || 'No se pudo exportar el informe');
+        }
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'informe_puntoventa.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1500);
+    } catch (error) {
+        alert(error.message || 'No se pudo descargar el Excel.');
+    } finally {
+        exportarInformeExcel.disabled = false;
+        exportarInformeExcel.textContent = original;
+    }
+});
+
+const exportarHistorialCSV = document.getElementById('exportarHistorialCSV');
+if (exportarHistorialCSV) exportarHistorialCSV.addEventListener('click', async () => {
+    const params = new URLSearchParams();
+    const desde = document.getElementById('historialDesde')?.value;
+    const hasta = document.getElementById('historialHasta')?.value;
+    const metodo = document.getElementById('historialMetodo')?.value;
+    const busqueda = document.getElementById('historialBusqueda')?.value;
+    if (desde) params.set('desde', desde); if (hasta) params.set('hasta', hasta);
+    if (metodo) params.set('metodo', metodo); if (busqueda) params.set('busqueda', busqueda);
+    try {
+        const response = await fetch('/historial-ventas/exportar.csv?' + params.toString(), {headers:{'x-token-pestana':tokenPOS()}});
+        if (!response.ok) { const data=await response.json().catch(()=>({})); throw new Error(data.error || 'No se pudo exportar'); }
+        const blob=await response.blob(), url=URL.createObjectURL(blob), a=document.createElement('a');
+        a.href=url; a.download='historial_ventas.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    } catch(e) { alert(e.message); }
+});
+
+// Los administradores pueden anular una venta completa desde su detalle.
+window.anularVentaPOS = async function(id){
+    const motivo=prompt('Motivo de la anulación de la venta #'+id+':'); if(!motivo||!motivo.trim())return;
+    if(!confirm('Se devolverán las unidades al inventario y se conservará el registro de auditoría. ¿Continuar?'))return;
+    try{await fetchPOS(`/ventas/${Number(id)}/anular`,{method:'POST',body:JSON.stringify({motivo:motivo.trim()})});alert('Venta anulada y movimiento de inventario registrado.');if(typeof cargarHistorialProfesional==='function')await cargarHistorialProfesional();}
+    catch(e){alert('No se pudo anular la venta: '+e.message);}
+};
+
 </script>
 </body>
 </html>
